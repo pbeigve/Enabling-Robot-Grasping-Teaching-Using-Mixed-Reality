@@ -104,3 +104,19 @@
 [2022-04-01 11:55:26.929] [console] [info] leap::LeapSession::Authenticate()#82:  Sending authentication request
 [2022-04-01 11:58:36.747] [console] [info] leap::LeapConnection::HandleTryConnect()#259:  Connecting to port: 12345
 [2022-04-01 11:58:36.747] [console] [info] leap::LeapSession::Authenticate()#82:  Sending authentication request
+[2022-04-13 15:35:29.894] [console] [info] leap::LeapConnection::HandleTryConnect()#259:  Connecting to port: 12345
+[2022-04-13 15:35:29.895] [console] [info] leap::LeapSession::Authenticate()#82:  Sending authentication request
+[2022-04-13 15:45:03.613] [console] [info] leap::LeapConnection::HandleTryConnect()#259:  Connecting to port: 12345
+[2022-04-13 15:45:03.613] [console] [info] leap::LeapSession::Authenticate()#82:  Sending authentication request
+[2022-04-13 15:46:51.503] [console] [info] leap::LeapConnection::HandleTryConnect()#259:  Connecting to port: 12345
+[2022-04-13 15:46:51.503] [console] [info] leap::LeapSession::Authenticate()#82:  Sending authentication request
+[2022-04-13 15:53:01.642] [console] [info] leap::LeapConnection::HandleTryConnect()#259:  Connecting to port: 12345
+[2022-04-13 15:53:01.642] [console] [info] leap::LeapSession::Authenticate()#82:  Sending authentication request
+[2022-04-13 15:53:33.811] [console] [info] leap::LeapConnection::HandleTryConnect()#259:  Connecting to port: 12345
+[2022-04-13 15:53:33.811] [console] [info] leap::LeapSession::Authenticate()#82:  Sending authentication request
+[2022-04-13 15:54:09.740] [console] [info] leap::LeapConnection::HandleTryConnect()#259:  Connecting to port: 12345
+[2022-04-13 15:54:09.740] [console] [info] leap::LeapSession::Authenticate()#82:  Sending authentication request
+[2022-04-13 15:54:32.433] [console] [info] leap::LeapConnection::HandleTryConnect()#259:  Connecting to port: 12345
+[2022-04-13 15:54:32.433] [console] [info] leap::LeapSession::Authenticate()#82:  Sending authentication request
+[2022-04-13 15:54:48.627] [console] [info] leap::LeapConnection::HandleTryConnect()#259:  Connecting to port: 12345
+[2022-04-13 15:54:48.627] [console] [info] leap::LeapSession::Authenticate()#82:  Sending authentication request
