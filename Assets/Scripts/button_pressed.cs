@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class button_pressed : MonoBehaviour
-{
-    public string objeto;
+{ 
     // Start is called before the first frame update
     void Start()
     {
@@ -14,7 +13,7 @@ public class button_pressed : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        Debug.Log("Boton " + gameObject.name + " pulsado");  
 
     }
 }

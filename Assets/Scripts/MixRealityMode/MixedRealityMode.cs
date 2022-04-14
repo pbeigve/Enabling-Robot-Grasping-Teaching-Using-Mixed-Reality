@@ -6,24 +6,24 @@ using Varjo.XR;
 public class MixedRealityMode : MonoBehaviour
 {
     private int botton;
-    private void Start()
+    void Start()
     {
         botton = 0;
     }
     
 
     
-    public void buttonpressed()
+    void update()
         {
-if (botton == 0)
+        if (botton == 0)
 {
-    VarjoMixedReality.StartRender();
-    botton = 1;
+             VarjoMixedReality.StartRender();
+             botton = 1;
 }
-else
+        else
 { 
-    VarjoMixedReality.StopRender();
-    botton = 0;
+            VarjoMixedReality.StopRender();
+            botton = 0;
 }
 }
 }
