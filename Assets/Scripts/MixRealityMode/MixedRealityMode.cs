@@ -4,15 +4,7 @@ using UnityEngine;
 using Varjo.XR;
 public class MixedRealityMode : MonoBehaviour
 {
-   void Start()
-    {
-        VarjoMixedReality.StartRender();
-    }
-    private void Update()
-    {
-        
-    }
-    /* private int botton;
+    private int botton;
      private void Start()
      {
          botton = 0;
@@ -23,9 +15,9 @@ public class MixedRealityMode : MonoBehaviour
      public void buttonpressed()
          {
  if (botton == 0)
- {*/
-
-    /* botton = 1;
+ {
+            VarjoMixedReality.StartRender();
+            botton = 1;
  }
  else
  { 
@@ -33,5 +25,5 @@ public class MixedRealityMode : MonoBehaviour
      botton = 0;
  }
  }
- */
+ 
 }
