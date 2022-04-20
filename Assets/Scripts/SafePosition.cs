@@ -5,30 +5,26 @@ using UnityEngine;
 public class SafePosition : MonoBehaviour
 {
     private Vector3 PosicionRelativa;
-    struct GraspedObject
+    //struct de datos de colisiones
+    struct ObjGR
     {
-        //Variable declaration
-        //Note: I'm explicitly declaring them as public, but they are public by default. You can use private if you choose.
+       
         public string Name;
         public Vector3[] contacts;
-        //public Vector3 RobotWrist;
-
-        //Constructor (not necessary, but helpful)
-        public GraspedObject( string Name, Vector3 [] contacts) //Vector3 RobotWrist)
+        public Vector3 RobotWrist;
+        public ObjGR( string Name, Vector3 [] contacts, Vector3 RobotWrist)
         {
             this.Name = Name;
             this.contacts = contacts;
-            //this.RobotWrist = RobotWrist;
+            this.RobotWrist = RobotWrist;
         }
     }
-    GraspedObject[] a1;
-    private void Start()
-    {
-       
-    }
+    ObjGR[] a1;
     
     void OnCollisionStay(Collision collision)
     {
+        GameObject.Find("R_Palm");
+        a1.Add(ObjGR(collision.collider, collision.contacts,   ))
         foreach (ContactPoint contact in collision.contacts)
         { 
             //printea la posicion del objeto respecto a su referencia
