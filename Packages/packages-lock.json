@@ -203,7 +203,7 @@
       "url": "https://packages.unity.com"
     },
     "com.varjo.xr": {
-      "version": "file:C:/Users/pbeigve/Documents/Documents/ingemieria/tgb/unity/VarjoUnityXRPlugin-master/VarjoUnityXRPlugin-master",
+      "version": "file:C:/Users/pbeig/Downloads/VarjoUnityXRPlugin-master/VarjoUnityXRPlugin-master",
       "depth": 0,
       "source": "local",
       "dependencies": {
