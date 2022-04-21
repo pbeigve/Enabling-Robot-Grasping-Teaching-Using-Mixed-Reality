@@ -6,25 +6,36 @@ public class SafePosition : MonoBehaviour
 {
     private Vector3 PosicionRelativa;
     //struct de datos de colisiones
-    struct ObjGR
+    public struct ObjGR
     {
-       
         public string Name;
-        public Vector3[] contacts;
+        public List<Vector3> fingers;
         public Vector3 RobotWrist;
-        public ObjGR( string Name, Vector3 [] contacts, Vector3 RobotWrist)
-        {
-            this.Name = Name;
-            this.contacts = contacts;
-            this.RobotWrist = RobotWrist;
-        }
+
     }
-    ObjGR[] a1;
-    
+    public ObjGR[] dataGR;
+    public ObjGR[] Rellena_struct(string Name, List<Vector3> fingers, Vector3 RobotWrist, List<ObjGR> dataGR)
+    {
+        bool find = false;
+        int i = 0;
+
+        while(find! or i<=dataGR.LastIndexOf)
+            {
+            if()
+        }
+        if (dataGR.Name.Contains(Name))
+            a1.Name.Add(Name);
+        foreach (Vector3 finger in fingers)
+        {
+            _
+            }
+        this.RobotWrist = RobotWrist;
+        return dataGR;
+    }
     void OnCollisionStay(Collision collision)
     {
         GameObject.Find("R_Palm");
-        a1.Add(ObjGR(collision.collider, collision.contacts,   ))
+        new a1(ObjGR(collision.collider, collision.contacts,   ))
         foreach (ContactPoint contact in collision.contacts)
         { 
             //printea la posicion del objeto respecto a su referencia
