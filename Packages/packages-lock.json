@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.unity.collab-proxy": {
-      "version": "1.15.15",
+      "version": "1.15.13",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -203,7 +203,7 @@
       "url": "https://packages.unity.com"
     },
     "com.varjo.xr": {
-      "version": "file:C:/Users/Marcos/Downloads/VarjoUnityXRPlugin-master/VarjoUnityXRPlugin-master",
+      "version": "file:C:/Users/pbeigve/Documents/Documents/ingemieria/tgb/unity/VarjoUnityXRPlugin-master/VarjoUnityXRPlugin-master",
       "depth": 0,
       "source": "local",
       "dependencies": {
