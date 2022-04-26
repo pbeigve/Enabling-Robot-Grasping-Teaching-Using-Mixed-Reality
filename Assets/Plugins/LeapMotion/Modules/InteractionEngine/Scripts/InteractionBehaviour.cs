@@ -1259,9 +1259,17 @@ namespace Leap.Unity.Interaction {
       // Add each newly grasping hand to internal reference and pose solver.
       foreach (var controller in controllers) {
         _graspingControllers.Add(controller);
+                
+                //-------------------------------------------------------------ESTO NO LO TENGO CLARO--------------------------------------------------
+                Debug.Log(GetGraspPoint(controller) + "Desconocido");
+                //-----------------------------------------------------------------------------------------------------------------------------------------
+                Debug.Log(GameObject.Find("R_Palm").transform.position + "Muniain");
+                Debug.Log(GameObject.Find("R_Palm").transform.rotation + "Muniain Rot");
 
-        if (moveObjectWhenGrasped) {
+                Debug.Log(gameObject.transform.position + "Ojeto");
+                if (moveObjectWhenGrasped) {
           graspedPoseHandler.AddController(controller);
+
         }
 
         // Fire interaction callback.
