@@ -17,6 +17,7 @@ using UnityEngine;
 
 namespace Leap.Unity.Interaction {
 
+
   public enum ContactForceMode { Object, UI };
 
   /// <summary>
@@ -35,7 +36,68 @@ namespace Leap.Unity.Interaction {
   [RequireComponent(typeof(Rigidbody))]
   public class InteractionBehaviour : MonoBehaviour, IInteractionBehaviour {
 
-    public const float MAX_ANGULAR_VELOCITY = 100F;
+        //----------------------------------------------------------------BASE DE DATOS-------------------------
+        [System.Serializable]
+        public struct ObjGR
+        {
+            public string Name;
+            public Vector3 RobotWristPos;
+            public Quaternion RobotWristRot;
+            public Vector3 GraspPoint;
+            public Vector3 ObjectPos;
+
+        }
+        public ObjGR[] dataGR;
+        
+        public void Rellena_struct(string Name, GameObject RobotWrist, Vector3 GraspPoint, Vector3 ObjectPos, ObjGR[] dataGR)
+        {
+            int i = -1;
+            bool find = false;
+            bool blank = false;
+            while (!blank && !find)
+            {
+                i++;
+                if (dataGR[i].Name == Name) //--------------------------------falta una condicion-------------------------
+                {
+                    dataGR[i].RobotWristPos = RobotWrist.transform.position;
+                    dataGR[i].RobotWristRot = RobotWrist.transform.rotation * Quaternion.Euler(0, 180, 90); ;
+                    dataGR[i].GraspPoint = GraspPoint;
+                    dataGR[i].ObjectPos = ObjectPos;
+                    find = true;
+                }
+                if (dataGR[i].Name == null)
+                {
+                    blank = true;
+                dataGR[i].Name = Name;
+                dataGR[i].RobotWristPos = RobotWrist.transform.position;
+                dataGR[i].RobotWristRot = RobotWrist.transform.rotation * Quaternion.Euler(0, 180, 90);
+                dataGR[i].GraspPoint = GraspPoint;
+                dataGR[i].ObjectPos = ObjectPos;
+                }
+                GameObject.Find("Target").transform.localPosition = dataGR[i].RobotWristPos;
+                GameObject.Find("Target").transform.localRotation = dataGR[i].RobotWristRot;
+            }
+        }
+        public void mostrar_data(ObjGR[] dataGR)
+        {
+            foreach (ObjGR data in dataGR)
+            {
+                Debug.Log(data.Name + ": ");
+                Debug.Log("Wrist position: "+ data.RobotWristPos + " Wrist Rotation: " + data.RobotWristRot + " Object Position: " + data.ObjectPos + " Grasping Point: " + data.GraspPoint);
+                
+
+            }
+
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------CONTADOR-------------------------------------
+        private float nextActionTime = 0.0f;
+        // every 1f = 1 second
+        public float period = 0.1f;
+        //-------------------------------------------------------------------------------------------------------------
+
+
+        public const float MAX_ANGULAR_VELOCITY = 100F;
 
     #region Public API
 
@@ -838,6 +900,7 @@ namespace Leap.Unity.Interaction {
     }
 
     protected virtual void Start() {
+            dataGR = new ObjGR[5];
       // Check any Joint attachments to automatically be able to choose Kabsch pivot
       // setting (grasping).
       RefreshPositionLockedState();
@@ -1259,14 +1322,14 @@ namespace Leap.Unity.Interaction {
       // Add each newly grasping hand to internal reference and pose solver.
       foreach (var controller in controllers) {
         _graspingControllers.Add(controller);
-                
-                //-------------------------------------------------------------ESTO NO LO TENGO CLARO--------------------------------------------------
-                Debug.Log(GetGraspPoint(controller) + "Desconocido");
+
+                //-------------------------------------------------------------Struct de datos--------------------------------------------------
+                Rellena_struct(gameObject.name, GameObject.Find("R_Palm"), GetGraspPoint(controller), gameObject.transform.position, dataGR);
                 //-----------------------------------------------------------------------------------------------------------------------------------------
-                Debug.Log(GameObject.Find("R_Palm").transform.position + "Muniain");
+                /*Debug.Log(GameObject.Find("R_Palm").transform.position + "Muniain");
                 Debug.Log(GameObject.Find("R_Palm").transform.rotation + "Muniain Rot");
 
-                Debug.Log(gameObject.transform.position + "Ojeto");
+                Debug.Log(gameObject.transform.position + "Ojeto");*/
                 if (moveObjectWhenGrasped) {
           graspedPoseHandler.AddController(controller);
 
@@ -1359,12 +1422,24 @@ namespace Leap.Unity.Interaction {
 
         graspedPoseHandler.GetGraspedPosition(out newPosition, out newRotation);
 
-        fixedUpdateGraspedMovement(new Pose(origPosition, origRotation),
-                                   new Pose(newPosition, newRotation),
-                                   controllers);
-
+                fixedUpdateGraspedMovement(new Pose(origPosition, origRotation),
+                                           new Pose(newPosition, newRotation),
+                                           controllers);
         throwHandler.OnHold(this, controllers);
-      }
+                //-------------------------------------------AQUI TIENE QUE EMPEZAR EL MOVIMIENTO LINEAL--------------------------------------------------------------------------
+                if (Time.time > nextActionTime)
+                {
+                    nextActionTime = Time.time + period;
+
+                    GameObject.Find("Target").transform.localPosition = GameObject.Find("R_Palm").transform.position;
+                    GameObject.Find("Target").transform.localRotation = GameObject.Find("R_Palm").transform.rotation * Quaternion.Euler(0, 180, 90);
+
+
+                }
+
+
+                //--------------------------------------------------------------------------------------------------------------------
+            }
 
       OnGraspStay();
 
