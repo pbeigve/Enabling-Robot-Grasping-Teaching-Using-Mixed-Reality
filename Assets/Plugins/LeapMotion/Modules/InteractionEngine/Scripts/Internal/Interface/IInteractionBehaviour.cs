@@ -20,7 +20,7 @@ namespace Leap.Unity.Interaction {
   /// specifying the minimum set of functionality required to make objects interactable.
   /// </summary>
   public interface IInteractionBehaviour /* : IInternalInteractionBehaviour */ {
-
+    
     // Properties from MonoBehaviour.
     string              name       { get; } // (subclass MonoBehaviour to satisfy)
     GameObject          gameObject { get; } // ^

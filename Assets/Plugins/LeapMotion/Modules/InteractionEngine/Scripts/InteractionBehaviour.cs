@@ -5,21 +5,22 @@
  * http://www.apache.org/licenses/LICENSE-2.0, or another agreement           *
  * between Ultraleap and you, your company or other organization.             *
  ******************************************************************************/
-
+using System.Collections.Generic;
 using Leap.Interaction.Internal.InteractionEngineUtility;
 using Leap.Unity.Attributes;
 using Leap.Unity.Interaction.Internal;
 using Leap.Unity.Query;
 using Leap.Unity.Space;
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
+
+
 namespace Leap.Unity.Interaction {
-
-
+    
   public enum ContactForceMode { Object, UI };
-
+    
   /// <summary>
   /// InteractionBehaviours are components that enable GameObjects to interact with
   /// interaction controllers (InteractionControllerBase) in a physically intuitive way.
@@ -35,60 +36,11 @@ namespace Leap.Unity.Interaction {
   /// </summary>
   [RequireComponent(typeof(Rigidbody))]
   public class InteractionBehaviour : MonoBehaviour, IInteractionBehaviour {
-
-        //----------------------------------------------------------------BASE DE DATOS-------------------------
-        [System.Serializable]
-        public struct ObjGR
-        {
-            public string Name;
-            public Vector3 RobotWristPos;
-            public Quaternion RobotWristRot;
-            public Vector3 GraspPoint;
-            public Vector3 ObjectPos;
-
-        }
-        public ObjGR[] dataGR;
+        DataStruct data;
         
-        public void Rellena_struct(string Name, GameObject RobotWrist, Vector3 GraspPoint, Vector3 ObjectPos, ObjGR[] dataGR)
-        {
-            int i = -1;
-            bool find = false;
-            bool blank = false;
-            while (!blank && !find)
-            {
-                i++;
-                if (dataGR[i].Name == Name) //--------------------------------falta una condicion-------------------------
-                {
-                    dataGR[i].RobotWristPos = RobotWrist.transform.position;
-                    dataGR[i].RobotWristRot = RobotWrist.transform.rotation * Quaternion.Euler(0, 180, 90); ;
-                    dataGR[i].GraspPoint = GraspPoint;
-                    dataGR[i].ObjectPos = ObjectPos;
-                    find = true;
-                }
-                if (dataGR[i].Name == null)
-                {
-                    blank = true;
-                dataGR[i].Name = Name;
-                dataGR[i].RobotWristPos = RobotWrist.transform.position;
-                dataGR[i].RobotWristRot = RobotWrist.transform.rotation * Quaternion.Euler(0, 180, 90);
-                dataGR[i].GraspPoint = GraspPoint;
-                dataGR[i].ObjectPos = ObjectPos;
-                }
-                GameObject.Find("Target").transform.localPosition = dataGR[i].RobotWristPos;
-                GameObject.Find("Target").transform.localRotation = dataGR[i].RobotWristRot;
-            }
-        }
-        public void mostrar_data(ObjGR[] dataGR)
-        {
-            foreach (ObjGR data in dataGR)
-            {
-                Debug.Log(data.Name + ": ");
-                Debug.Log("Wrist position: "+ data.RobotWristPos + " Wrist Rotation: " + data.RobotWristRot + " Object Position: " + data.ObjectPos + " Grasping Point: " + data.GraspPoint);
-                
-
-            }
-
-        }
+        //----------------------------------------------------------------BASE DE DATOS-------------------------
+        //public GameObject DataSt;
+        
         //-------------------------------------------------------------------------------------------------------------
         //----------------------------------------------------------------CONTADOR-------------------------------------
         private float nextActionTime = 0.0f;
@@ -900,10 +852,10 @@ namespace Leap.Unity.Interaction {
     }
 
     protected virtual void Start() {
-            dataGR = new ObjGR[5];
-      // Check any Joint attachments to automatically be able to choose Kabsch pivot
-      // setting (grasping).
-      RefreshPositionLockedState();
+            data= GameObject.Find("marcador").GetComponent<DataStruct>();
+            // Check any Joint attachments to automatically be able to choose Kabsch pivot
+            // setting (grasping).
+            RefreshPositionLockedState();
     }
 
     #endregion
@@ -1270,7 +1222,7 @@ namespace Leap.Unity.Interaction {
         _graspedPoseHandler = value;
       }
     }
-
+        
     private KinematicGraspedMovement _lazyKinematicGraspedMovement;
     private KinematicGraspedMovement _kinematicGraspedMovement {
       get {
@@ -1322,9 +1274,11 @@ namespace Leap.Unity.Interaction {
       // Add each newly grasping hand to internal reference and pose solver.
       foreach (var controller in controllers) {
         _graspingControllers.Add(controller);
-
+                //DataSt.GetComponent<DataStr>
                 //-------------------------------------------------------------Struct de datos--------------------------------------------------
-                Rellena_struct(gameObject.name, GameObject.Find("R_Palm"), GetGraspPoint(controller), gameObject.transform.position, dataGR);
+                //datastruct.Rellena_struct(gameObject.name, GameObject.Find("R_Palm"), GetGraspPoint(controller), gameObject.transform.position, datastruct.dataGR);
+                data.Rellena_struct(gameObject.name, GameObject.Find("R_Palm"), GetGraspPoint(controller), gameObject.transform.position, data.dataGR);
+                
                 //-----------------------------------------------------------------------------------------------------------------------------------------
                 /*Debug.Log(GameObject.Find("R_Palm").transform.position + "Muniain");
                 Debug.Log(GameObject.Find("R_Palm").transform.rotation + "Muniain Rot");
