@@ -1362,6 +1362,26 @@ PrefabInstance:
       propertyPath: MovableJoints.Array.data[3].Offset
       value: -1.570796
       objectReference: {fileID: 0}
+    - target: {fileID: 5460757065619685884, guid: ce706135621a67640bcab3c704957ee6, type: 3}
+      propertyPath: AllJoints.Array.data[3].Origin.position.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5460757065619685884, guid: ce706135621a67640bcab3c704957ee6, type: 3}
+      propertyPath: AllJoints.Array.data[3].Origin.rotation.w
+      value: 0.7070798
+      objectReference: {fileID: 0}
+    - target: {fileID: 5460757065619685884, guid: ce706135621a67640bcab3c704957ee6, type: 3}
+      propertyPath: AllJoints.Array.data[3].Origin.rotation.x
+      value: 0.0061705923
+      objectReference: {fileID: 0}
+    - target: {fileID: 5460757065619685884, guid: ce706135621a67640bcab3c704957ee6, type: 3}
+      propertyPath: AllJoints.Array.data[3].Origin.rotation.y
+      value: 0.0061705923
+      objectReference: {fileID: 0}
+    - target: {fileID: 5460757065619685884, guid: ce706135621a67640bcab3c704957ee6, type: 3}
+      propertyPath: AllJoints.Array.data[3].Origin.rotation.z
+      value: 0.7070798
+      objectReference: {fileID: 0}
     - target: {fileID: 6168963265313744710, guid: ce706135621a67640bcab3c704957ee6, type: 3}
       propertyPath: m_ConnectedAnchor.x
       value: 1.0048592e-14

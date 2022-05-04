@@ -5,6 +5,7 @@ using UnityEngine;
 public class DataStruct : MonoBehaviour
 {
     
+
     //----------------------------------------------------------------BASE DE DATOS-------------------------
     [System.Serializable]
 
@@ -20,9 +21,18 @@ public class DataStruct : MonoBehaviour
 
     }
 
-    
+    public struct ObjPath
+    {
+
+        public Vector3 pathPos;
+        public Quaternion pathRot;
+  
+
+    }
+
+
     public ObjGR[] dataGR;
-    public Vector3 munien;
+    public ObjPath[] dataPath;
     public void Rellena_struct(string Name, GameObject RobotWrist, Vector3 GraspPoint, Vector3 ObjectPos, ObjGR[] dataGR)
     {
         int i = -1;
@@ -50,11 +60,27 @@ public class DataStruct : MonoBehaviour
             }
             GameObject.Find("Target").transform.localPosition = dataGR[i].RobotWristPos;
             GameObject.Find("Target").transform.localRotation = dataGR[i].RobotWristRot;
+            WaitUntil 
             GameObject.Find("Cylinderobot").transform.SetParent(GameObject.Find("Agarre").transform);
 
         }
-        //GameObject.Find("Agarre").transform.DetachChildren();
     }
+        public void Rellena_Path(GameObject RobotWrist, ObjPath[] dataPath)
+        {
+            int i = -1;
+            bool blank = false;
+            while (!blank)
+            {
+                i++;
+                if (dataGR[i].Name == null)
+                {
+                    blank = true;
+                    dataPath[i].pathPos = RobotWrist.transform.position;
+                    dataPath[i].pathRot = RobotWrist.transform.rotation * Quaternion.Euler(0, 180, 90);
+                }
+            }
+            //GameObject.Find("Agarre").transform.DetachChildren();
+        }
     public void mostrar_data(ObjGR[] dataGR)
     {
         foreach (ObjGR data in dataGR)

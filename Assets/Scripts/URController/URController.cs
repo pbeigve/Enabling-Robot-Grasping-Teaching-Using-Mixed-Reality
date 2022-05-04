@@ -40,9 +40,11 @@ public class URController : MonoBehaviour
     [Header("Other settings")]
 
     public float SingularityThreshold = 0.01f;
+    public bool FinishMovement;
 
     void Start()
     {
+        FinishMovement = false;
         Robot = GetComponent<UrdfRobot>();
 
         foreach (var joint in Robot.GetComponentsInChildren<HingeJoint>())
@@ -55,11 +57,19 @@ public class URController : MonoBehaviour
     private void Update()
     {
         if (FKMarker != null)
-        {
+        { 
             Vector<float> currentJoints = new DenseVector(Robot.Values.ToArray());
             Matrix4x4 current = Origin.localToWorldMatrix * DH.FK(currentJoints, DHParams).ToLHWorld();
             FKMarker.transform.position = current.GetColumn(3);
             FKMarker.transform.rotation = current.rotation;
+        }
+        if ( FKMarker.transform.position==GameObject.Find("Target").transform.position)
+        {
+            FinishMovement = true;
+        }
+        else
+        {
+            FinishMovement = false;
         }
     }
 
@@ -69,10 +79,13 @@ public class URController : MonoBehaviour
         if (CurrentTarget == TargetType.Cartesian && CartesianTarget == null ||
             CurrentTarget == TargetType.Joint && Robot.Values.Count != JointTarget.Count)
             return;
+        
+           
 
         Vector<float> currentJoints = new DenseVector(Robot.Values.ToArray());
         Matrix4x4 forward = DH.FK(currentJoints, DHParams);
         Matrix<float> jacobian = DH.Jacobian(currentJoints, DHParams);
+        
 
         if (RunLinear)
         {
