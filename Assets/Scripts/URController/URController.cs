@@ -63,14 +63,6 @@ public class URController : MonoBehaviour
             FKMarker.transform.position = current.GetColumn(3);
             FKMarker.transform.rotation = current.rotation;
         }
-        if ( FKMarker.transform.position==GameObject.Find("Target").transform.position)
-        {
-            FinishMovement = true;
-        }
-        else
-        {
-            FinishMovement = false;
-        }
     }
 
     void FixedUpdate()

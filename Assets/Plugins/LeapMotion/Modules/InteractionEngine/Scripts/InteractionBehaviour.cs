@@ -1344,19 +1344,26 @@ namespace Leap.Unity.Interaction {
 
         foreach (var item in _graspingControllers) {
           graspedPoseHandler.AddController(item);
+
         }
-      }
+                
+            }
 
       // If the object is no longer grasped by any hands, restore state and
       // activate throw handler.
       if (_graspingControllers.Count == 0) {
         // Restore drag settings from prior to the grasp.
+
+
         rigidbody.drag = _dragBeforeGrasp;
         rigidbody.angularDrag = _angularDragBeforeGrasp;
 
         // Revert kinematic state.
         rigidbody.isKinematic = _wasKinematicBeforeGrasp;
-
+                    //--------------------------------------------------------------------------------------------ACABA EL GRASPEO-------------
+            GameObject.Find("Agarre").transform.DetachChildren();
+                GameObject.Find("Target").transform.localPosition = GameObject.Find("Target2").transform.localPosition;
+                    //---------------------------------------------------------------------------------------------------------
         if (controllers.Count == 1) {
           throwHandler.OnThrow(this, controllers.Query().First());
         }

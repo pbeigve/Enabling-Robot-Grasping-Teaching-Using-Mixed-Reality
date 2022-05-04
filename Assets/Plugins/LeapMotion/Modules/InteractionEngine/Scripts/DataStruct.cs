@@ -5,7 +5,7 @@ using UnityEngine;
 public class DataStruct : MonoBehaviour
 {
     
-
+    
     //----------------------------------------------------------------BASE DE DATOS-------------------------
     [System.Serializable]
 
@@ -14,8 +14,6 @@ public class DataStruct : MonoBehaviour
         public string Name;
         public Vector3 RobotWristPos;
         public Quaternion RobotWristRot;
-        /*public Vector3[] pathPos;
-        public Quaternion[] pathRot;*/
         public Vector3 GraspPoint;
         public Vector3 ObjectPos;
 
@@ -26,16 +24,15 @@ public class DataStruct : MonoBehaviour
 
         public Vector3 pathPos;
         public Quaternion pathRot;
-  
-
     }
 
-
+    public bool FinishMovement;
     public ObjGR[] dataGR;
     public ObjPath[] dataPath;
     public void Rellena_struct(string Name, GameObject RobotWrist, Vector3 GraspPoint, Vector3 ObjectPos, ObjGR[] dataGR)
     {
         int i = -1;
+       
         bool find = false;
         bool blank = false;
         while (!blank && !find)
@@ -60,7 +57,7 @@ public class DataStruct : MonoBehaviour
             }
             GameObject.Find("Target").transform.localPosition = dataGR[i].RobotWristPos;
             GameObject.Find("Target").transform.localRotation = dataGR[i].RobotWristRot;
-            WaitUntil 
+
             GameObject.Find("Cylinderobot").transform.SetParent(GameObject.Find("Agarre").transform);
 
         }
@@ -96,5 +93,17 @@ public class DataStruct : MonoBehaviour
     void Start()
     {
         dataGR = new ObjGR[5];
+        FinishMovement = false;
+    }
+    void Update()
+    {
+        if(GameObject.Find("Target").transform.position==GameObject.Find("FK Marker").transform.position)
+        {
+            FinishMovement = true;
+        }
+        else
+        {
+            FinishMovement = false;
+        }
     }
 }
