@@ -26,7 +26,7 @@ public class DataStruct : MonoBehaviour
         public Quaternion pathRot;
     }
 
-    public bool FinishMovement;
+    public bool Grasp;
     public ObjGR[] dataGR;
     public ObjPath[] dataPath;
     public void Rellena_struct(string Name, GameObject RobotWrist, Vector3 GraspPoint, Vector3 ObjectPos, ObjGR[] dataGR)
@@ -58,7 +58,7 @@ public class DataStruct : MonoBehaviour
             GameObject.Find("Target").transform.localPosition = dataGR[i].RobotWristPos;
             GameObject.Find("Target").transform.localRotation = dataGR[i].RobotWristRot;
 
-            GameObject.Find("Cylinderobot").transform.SetParent(GameObject.Find("Agarre").transform);
+           
 
         }
     }
@@ -93,17 +93,7 @@ public class DataStruct : MonoBehaviour
     void Start()
     {
         dataGR = new ObjGR[5];
-        FinishMovement = false;
+        Grasp = false;
     }
-    void Update()
-    {
-        if(GameObject.Find("Target").transform.position==GameObject.Find("FK Marker").transform.position)
-        {
-            FinishMovement = true;
-        }
-        else
-        {
-            FinishMovement = false;
-        }
-    }
+ 
 }
