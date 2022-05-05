@@ -1438,12 +1438,12 @@ namespace Leap.Unity.Interaction
                 //DataSt.GetComponent<DataStr>
                 //-------------------------------------------------------------Struct de datos--------------------------------------------------
                 //datastruct.Rellena_struct(gameObject.name, GameObject.Find("R_Palm"), GetGraspPoint(controller), gameObject.transform.position, datastruct.dataGR);
-                data.Rellena_struct(gameObject.name, GameObject.Find("R_Palm"), GetGraspPoint(controller), gameObject.transform.position, data.dataGR);
-                if (GameObject.Find("Target").transform.position == GameObject.Find("FK Marker").transform.position)
-                {
-
-                    GameObject.Find("Cylinderobot").transform.SetParent(GameObject.Find("Agarre").transform);
-                }
+                    data.Rellena_struct(gameObject.name, GameObject.Find("R_Palm"), GetGraspPoint(controller), gameObject.transform.position, data.dataGR);
+                // if (GameObject.Find("Target").transform.position == GameObject.Find("FK Marker").transform.position)
+                // {
+                
+                
+                //}
                 //-----------------------------------------------------------------------------------------------------------------------------------------
                 /*Debug.Log(GameObject.Find("R_Palm").transform.position + "Muniain");
                 Debug.Log(GameObject.Find("R_Palm").transform.rotation + "Muniain Rot");
@@ -1536,9 +1536,9 @@ namespace Leap.Unity.Interaction
                 // Revert kinematic state.
                 rigidbody.isKinematic = _wasKinematicBeforeGrasp;
                 //--------------------------------------------------------------------------------------------ACABA EL GRASPEO-------------
-                GameObject.Find("Agarre").transform.DetachChildren();
+                
                 GameObject.Find("Target").transform.localPosition = GameObject.Find("Target2").transform.localPosition;
-
+                data.GraspStay = false;
                 //---------------------------------------------------------------------------------------------------------
                 if (controllers.Count == 1)
                 {
@@ -1552,7 +1552,9 @@ namespace Leap.Unity.Interaction
         }
 
         public void StayGrasped(List<InteractionController> controllers)
-        {
+        {                
+
+
             if (moveObjectWhenGrasped)
             {
                 Vector3 origPosition = rigidbody.position;
@@ -1571,12 +1573,18 @@ namespace Leap.Unity.Interaction
                 {
                     nextActionTime = Time.time + period;*/
 
-                GameObject.Find("Target").transform.localPosition = GameObject.Find("R_Palm").transform.position;
-                GameObject.Find("Target").transform.localRotation = GameObject.Find("R_Palm").transform.rotation * Quaternion.Euler(0, 180, 90);
-
-
                 /*}*/
-
+                if (data.dataGR[data.lookfor_name_Data(gameObject.name)].RobotWristPos == GameObject.Find("FK Marker").transform.localPosition && !data.FirstGrasp) //--------------------------------------------ESTO HAY QUE CAMBIARLO PARA MAS OBJETOS
+                {
+                    data.FirstGrasp = true;
+                    GameObject.Find("Cylinderobot").transform.SetParent(GameObject.Find("Agarre").transform);
+                }
+                if (data.FirstGrasp == true)
+                {
+                    GameObject.Find("Target").transform.localPosition = GameObject.Find("R_Palm").transform.position;
+                    GameObject.Find("Target").transform.localRotation = GameObject.Find("R_Palm").transform.rotation * Quaternion.Euler(0, 180, 90);
+                }
+                
 
                 //---------------------------------------------------------------------------------------------------------------------------------------------------------------
             }

@@ -10,7 +10,8 @@ public class ARmode : MonoBehaviour
     void Start()
     {
         VarjoMixedReality.StartRender();
-        
+         // Enable Depth Estimation.
+        //VarjoMixedReality.EnableDepthEstimation();
     }
 
     // Update is called once per frame
@@ -23,4 +24,6 @@ public class ARmode : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+
+
 }

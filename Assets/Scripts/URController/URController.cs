@@ -254,7 +254,7 @@ public class URController : MonoBehaviour
         float c3 = (p14.x * p14.x + p14.y * p14.y - a2 * a2 - a3 * a3) / (2 * a2 * a3);
         if (c3 < -1 || c3 > 1)
         {
-            Debug.Log("Out of reach: Target is too far away from the robot");
+            //Debug.Log("Out of reach: Target is too far away from the robot");
             return null;
         }
 

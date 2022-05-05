@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class DataStruct : MonoBehaviour
 {
-    
-    
+
+
     //----------------------------------------------------------------BASE DE DATOS-------------------------
     [System.Serializable]
-
+    
     public struct ObjGR
     {
         public string Name;
@@ -26,9 +26,13 @@ public class DataStruct : MonoBehaviour
         public Quaternion pathRot;
     }
 
-    public bool Grasp;
+    public bool GraspStay;
     public ObjGR[] dataGR;
     public ObjPath[] dataPath;
+    public bool mirrormode;
+    public bool FirstGrasp;
+    public Vector3 targetPos;
+    public Quaternion targetRot;
     public void Rellena_struct(string Name, GameObject RobotWrist, Vector3 GraspPoint, Vector3 ObjectPos, ObjGR[] dataGR)
     {
         int i = -1;
@@ -55,12 +59,54 @@ public class DataStruct : MonoBehaviour
                 dataGR[i].GraspPoint = GraspPoint;
                 dataGR[i].ObjectPos = ObjectPos;
             }
-            GameObject.Find("Target").transform.localPosition = dataGR[i].RobotWristPos;
-            GameObject.Find("Target").transform.localRotation = dataGR[i].RobotWristRot;
 
-           
+             GameObject.Find("Target").transform.localPosition= dataGR[i].RobotWristPos;
+             GameObject.Find("Target").transform.localRotation= dataGR[i].RobotWristRot;
+            /*if (mirrormode)
+            {
+                GameObject.Find("Target").transform.Se
+                GameObject.Find("Target").transform.localRotation.z = -GameObject.Find("Target").transform.localRotation.z;
+            }*/
+ 
+
+            GraspStay = true;
+
 
         }
+    }
+    public void copy_position(GameObject RobotWrist)
+    {
+        targetPos.y = RobotWrist.transform.position.y;
+        targetPos.z = RobotWrist.transform.position.z;
+        if (mirrormode)
+        {
+            targetRot.x = -RobotWrist.transform.position.x;
+            targetRot.z = -RobotWrist.transform.rotation.z;
+
+        }
+        else
+        {
+            targetRot.x = RobotWrist.transform.position.x;
+            targetRot.z = RobotWrist.transform.rotation.z;
+        }
+        targetRot.x = RobotWrist.transform.rotation.x;
+        targetRot.y = RobotWrist.transform.rotation.y;
+    }
+
+    public int lookfor_name_Data(string name)
+    {
+        int i=-1;
+        bool find = false;
+        while (!find)
+        {   
+            i++;
+            if (dataGR[i].Name == name)
+            {
+                find = true;
+            }
+           
+        }
+        return i;
     }
         public void Rellena_Path(GameObject RobotWrist, ObjPath[] dataPath)
         {
@@ -84,8 +130,6 @@ public class DataStruct : MonoBehaviour
         {
             Debug.Log(data.Name + ": ");
             Debug.Log("Wrist position: " + data.RobotWristPos + " Wrist Rotation: " + data.RobotWristRot + " Object Position: " + data.ObjectPos + " Grasping Point: " + data.GraspPoint);
-
-
         }
 
     }
@@ -93,7 +137,29 @@ public class DataStruct : MonoBehaviour
     void Start()
     {
         dataGR = new ObjGR[5];
-        Grasp = false;
+        mirrormode = false;
+        GraspStay = false;
+        FirstGrasp = false;
+       
+
     }
- 
+    private void Update()
+    {
+        
+
+        if (FirstGrasp && GraspStay && GameObject.Find("Cylinderobot").transform.parent != GameObject.Find("Agarre").transform)
+        {
+            GameObject.Find("Cylinderobot").transform.SetParent(GameObject.Find("Agarre").transform);
+        }
+
+        if (!GraspStay && GameObject.Find("Cylinderobot").transform.parent==GameObject.Find("Agarre").transform) //------------------------------------esto hay que cambiarlo para mas objetos
+        { 
+            GameObject.Find("Agarre").transform.DetachChildren();
+            FirstGrasp=false;
+
+        }
+
+
+    }
+
 }
