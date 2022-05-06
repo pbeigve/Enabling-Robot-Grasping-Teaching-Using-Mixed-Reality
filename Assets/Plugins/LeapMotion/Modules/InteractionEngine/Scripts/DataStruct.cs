@@ -59,38 +59,36 @@ public class DataStruct : MonoBehaviour
                 dataGR[i].GraspPoint = GraspPoint;
                 dataGR[i].ObjectPos = ObjectPos;
             }
+    
+        }
 
-             GameObject.Find("Target").transform.localPosition= dataGR[i].RobotWristPos;
-             GameObject.Find("Target").transform.localRotation= dataGR[i].RobotWristRot;
-            /*if (mirrormode)
-            {
-                GameObject.Find("Target").transform.Se
-                GameObject.Find("Target").transform.localRotation.z = -GameObject.Find("Target").transform.localRotation.z;
-            }*/
- 
+        //if(dataGR[i].ObjectPos.x > dataGR[i].RobotWristPos.x)
+        //{
+          //  GameObject.Find("Target").transform.position = GameObject.Find("RightAproach").transform.position
+        //}
+        
+            defineTarget(dataGR[i].RobotWristPos, dataGR[i].RobotWristRot);
 
+  
             GraspStay = true;
 
-
-        }
     }
-    public void copy_position(GameObject RobotWrist)
+
+    public void defineTarget(Vector3 RobotWristPos, Quaternion RobotWristRot)
     {
-        targetPos.y = RobotWrist.transform.position.y;
-        targetPos.z = RobotWrist.transform.position.z;
+        GameObject Target = GameObject.Find("Target");
+
+
         if (mirrormode)
         {
-            targetRot.x = -RobotWrist.transform.position.x;
-            targetRot.z = -RobotWrist.transform.rotation.z;
-
+             Target.transform.localPosition = new Vector3(-RobotWristPos.x, RobotWristPos.y, RobotWristPos.z);
+             Target.transform.localRotation = new Quaternion(-RobotWristRot.x, RobotWristRot.y, -RobotWristRot.z, RobotWristRot.w);
         }
         else
         {
-            targetRot.x = RobotWrist.transform.position.x;
-            targetRot.z = RobotWrist.transform.rotation.z;
+            Target.transform.localPosition = new Vector3(RobotWristPos.x, RobotWristPos.y, RobotWristPos.z);
+            Target.transform.localRotation = new Quaternion(RobotWristRot.x, RobotWristRot.y, RobotWristRot.z, RobotWristRot.w);
         }
-        targetRot.x = RobotWrist.transform.rotation.x;
-        targetRot.y = RobotWrist.transform.rotation.y;
     }
 
     public int lookfor_name_Data(string name)
@@ -140,8 +138,6 @@ public class DataStruct : MonoBehaviour
         mirrormode = false;
         GraspStay = false;
         FirstGrasp = false;
-       
-
     }
     private void Update()
     {

@@ -1569,11 +1569,7 @@ namespace Leap.Unity.Interaction
                                            controllers);
                 throwHandler.OnHold(this, controllers);
                 //-------------------------------------------AQUI TIENE QUE EMPEZAR EL MOVIMIENTO LINEAL--------------------------------------------------------------------------
-                /*if (Time.time > nextActionTime)
-                {
-                    nextActionTime = Time.time + period;*/
-
-                /*}*/
+                //If the first Grasped has happened the robot will be allowed to safe more data abot the movement
                 if (data.dataGR[data.lookfor_name_Data(gameObject.name)].RobotWristPos == GameObject.Find("FK Marker").transform.localPosition && !data.FirstGrasp) //--------------------------------------------ESTO HAY QUE CAMBIARLO PARA MAS OBJETOS
                 {
                     data.FirstGrasp = true;
@@ -1581,8 +1577,7 @@ namespace Leap.Unity.Interaction
                 }
                 if (data.FirstGrasp == true)
                 {
-                    GameObject.Find("Target").transform.localPosition = GameObject.Find("R_Palm").transform.position;
-                    GameObject.Find("Target").transform.localRotation = GameObject.Find("R_Palm").transform.rotation * Quaternion.Euler(0, 180, 90);
+                    data.defineTarget(GameObject.Find("R_Palm").transform.position, GameObject.Find("R_Palm").transform.rotation * Quaternion.Euler(0, 180, 90));
                 }
                 
 
