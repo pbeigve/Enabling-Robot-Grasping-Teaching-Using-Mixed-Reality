@@ -39,7 +39,9 @@ namespace Leap.Unity.Interaction
     public class InteractionBehaviour : MonoBehaviour, IInteractionBehaviour
     {
         DataStruct data;
-
+        public bool recording;
+        bool firstRecording;
+        int recordPosition;
         //----------------------------------------------------------------BASE DE DATOS-------------------------
         //public GameObject DataSt;
 
@@ -47,7 +49,7 @@ namespace Leap.Unity.Interaction
         //----------------------------------------------------------------CONTADOR-------------------------------------
         private float nextActionTime = 0.0f;
         // every 1f = 1 second
-        public float period = 0.1f;
+        public float period = 0.5f;
         //-------------------------------------------------------------------------------------------------------------
 
 
@@ -937,6 +939,9 @@ namespace Leap.Unity.Interaction
         protected virtual void Start()
         {
             data = GameObject.Find("marcador").GetComponent<DataStruct>();
+            recording = false;
+            firstRecording = false;
+            recordPosition = 0;
             // Check any Joint attachments to automatically be able to choose Kabsch pivot
             // setting (grasping).
             RefreshPositionLockedState();
@@ -1437,16 +1442,15 @@ namespace Leap.Unity.Interaction
                 _graspingControllers.Add(controller);
                 //DataSt.GetComponent<DataStr>
                 //-------------------------------------------------------------Struct de datos--------------------------------------------------
-                //datastruct.Rellena_struct(gameObject.name, GameObject.Find("R_Palm"), GetGraspPoint(controller), gameObject.transform.position, datastruct.dataGR);
-                    data.Rellena_struct(gameObject.name, GameObject.Find("R_Palm"), GetGraspPoint(controller), gameObject.transform.position, data.dataGR);
+                //datastruct.Rellena_struct(gameObject.name, GameObject.Find("TargetHandWrist"), GetGraspPoint(controller), gameObject.transform.position, datastruct.dataGR);
+                data.Rellena_struct(gameObject.name, GameObject.Find("TargetHandWrist"), gameObject.transform.position, data.dataGR);
+                recording = true;
                 // if (GameObject.Find("Target").transform.position == GameObject.Find("FK Marker").transform.position)
                 // {
-                
-                
                 //}
                 //-----------------------------------------------------------------------------------------------------------------------------------------
-                /*Debug.Log(GameObject.Find("R_Palm").transform.position + "Muniain");
-                Debug.Log(GameObject.Find("R_Palm").transform.rotation + "Muniain Rot");
+                /*Debug.Log(GameObject.Find("TargetHandWrist").transform.position + "Muniain");
+                Debug.Log(GameObject.Find("TargetHandWrist").transform.rotation + "Muniain Rot");
 
                 Debug.Log(gameObject.transform.position + "Ojeto");*/
                 if (moveObjectWhenGrasped)
@@ -1536,9 +1540,11 @@ namespace Leap.Unity.Interaction
                 // Revert kinematic state.
                 rigidbody.isKinematic = _wasKinematicBeforeGrasp;
                 //--------------------------------------------------------------------------------------------ACABA EL GRASPEO-------------
-                
+
                 GameObject.Find("Target").transform.localPosition = GameObject.Find("Target2").transform.localPosition;
                 data.GraspStay = false;
+                recording = false;
+                firstRecording = false;
                 //---------------------------------------------------------------------------------------------------------
                 if (controllers.Count == 1)
                 {
@@ -1552,7 +1558,7 @@ namespace Leap.Unity.Interaction
         }
 
         public void StayGrasped(List<InteractionController> controllers)
-        {                
+        {
 
 
             if (moveObjectWhenGrasped)
@@ -1570,16 +1576,34 @@ namespace Leap.Unity.Interaction
                 throwHandler.OnHold(this, controllers);
                 //-------------------------------------------AQUI TIENE QUE EMPEZAR EL MOVIMIENTO LINEAL--------------------------------------------------------------------------
                 //If the first Grasped has happened the robot will be allowed to safe more data abot the movement
-                if (data.dataGR[data.lookfor_name_Data(gameObject.name)].RobotWristPos == GameObject.Find("FK Marker").transform.localPosition && !data.FirstGrasp) //--------------------------------------------ESTO HAY QUE CAMBIARLO PARA MAS OBJETOS
+                if (!data.patientmode)
                 {
-                    data.FirstGrasp = true;
-                    GameObject.Find("Cylinderobot").transform.SetParent(GameObject.Find("Agarre").transform);
+                    if (data.dataGR[data.lookfor_name_Data(gameObject.name)].RobotWristPos == GameObject.Find("FK Marker").transform.localPosition && !data.FirstGrasp) //--------------------------------------------ESTO HAY QUE CAMBIARLO PARA MAS OBJETOS
+                    {
+                        data.FirstGrasp = true;
+                        GameObject.Find("Cylinderobot").transform.SetParent(GameObject.Find("Agarre").transform);
+                    }
+                    if (data.FirstGrasp == true)
+                    {
+                        data.defineTarget(GameObject.Find("TargetHandWrist").transform.position, GameObject.Find("TargetHandWrist").transform.rotation);
+                    }
                 }
-                if (data.FirstGrasp == true)
+                else if (data.patientmode && Time.time > nextActionTime) //si estamos en patient mode y ha pasado el tiempo de toma de muestra
                 {
-                    data.defineTarget(GameObject.Find("R_Palm").transform.position, GameObject.Find("R_Palm").transform.rotation * Quaternion.Euler(0, 180, 90));
+                    nextActionTime = Time.time + period;
+                    if (recording && !firstRecording)//si 
+                    {
+                        recordPosition = data.lookfor_name_Data(gameObject.name);
+           
+                        data.Rellena_path(recordPosition, GameObject.Find("TargetHandWrist"), data.dataGR);
+                        firstRecording = true;
+
+                    }
+                    else if (recording && firstRecording)
+                    {
+                        data.Rellena_path(recordPosition, GameObject.Find("TargetHandWrist"), data.dataGR);
+                    }
                 }
-                
 
                 //---------------------------------------------------------------------------------------------------------------------------------------------------------------
             }
