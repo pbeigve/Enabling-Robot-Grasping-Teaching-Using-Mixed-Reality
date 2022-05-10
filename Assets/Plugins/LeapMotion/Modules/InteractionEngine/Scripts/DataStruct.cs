@@ -39,7 +39,7 @@ public class DataStruct : MonoBehaviour
         {
             mirrormode = false;
         }
-        if(!mirrormode)
+        else
         {
             mirrormode = true;
         }
