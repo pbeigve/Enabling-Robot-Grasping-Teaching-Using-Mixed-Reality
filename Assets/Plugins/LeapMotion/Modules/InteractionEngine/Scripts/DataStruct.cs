@@ -32,50 +32,94 @@ public class DataStruct : MonoBehaviour
     GameObject FK_Marker;
     GameObject Target;
 
-public void Rellena_struct(string Name, GameObject RobotWrist, Vector3 ObjectPos, ObjGR[] dataGR)
+
+    public void MirrorTrue()
+    {
+        if (mirrormode)
+        {
+            mirrormode = false;
+        }
+        if(!mirrormode)
+        {
+            mirrormode = true;
+        }
+    }
+   
+    public void Rellena_struct(string Name, GameObject RobotWrist, Vector3 ObjectPos, ObjGR[] dataGR, bool mirrormode)
     {
         int i = -1;
 
         bool find = false;
         bool blank = false;
-        while (!blank && !find)
+        while (!blank && !find && i<5)
         {
+            Debug.Log("Buscando");
             i++;
-            if (dataGR[i].Name == Name) //--------------------------------falta una condicion-------------------------
+            if (dataGR[i].Name == Name)//--------------------------------falta una condicion-------------------------
             {
                 find = true;
-                dataGR[i].RobotWristPos = RobotWrist.transform.position;
-                dataGR[i].RobotWristRot = RobotWrist.transform.rotation;
+                if (mirrormode)
+                {
+                    dataGR[i].RobotWristPos = new Vector3(-RobotWrist.transform.position.x, RobotWrist.transform.position.y, RobotWrist.transform.position.z);
+                    dataGR[i].RobotWristRot = RobotWrist.transform.rotation * Quaternion.Euler(0, 90, 90); ;
+
+                }
+                else
+                {
+                    dataGR[i].RobotWristPos = RobotWrist.transform.position;
+                    dataGR[i].RobotWristRot = RobotWrist.transform.rotation;
+                }
+
                 dataGR[i].ObjectPos = ObjectPos;
                 dataGR[i].pathPos.Clear();
-                dataGR[i].pathPos.Add(RobotWrist.transform.position);
+                dataGR[i].pathPos.Add(dataGR[i].RobotWristPos);
                 dataGR[i].pathRot.Clear();
-                dataGR[i].pathRot.Add(RobotWrist.transform.rotation);
+                dataGR[i].pathRot.Add(dataGR[i].RobotWristRot);
                 movementPos = 0;
+                if (!patientmode)
+                {
+                    defineTarget(dataGR[i].RobotWristPos, dataGR[i].RobotWristRot);
+                }
+                GraspStay = true;
 
             }
-            if (dataGR[i].Name == null)
+            if (string.IsNullOrEmpty(dataGR[i].Name))
             {
+                Debug.Log("encontrado");
                 blank = true;
                 dataGR[i].Name = Name;
-                dataGR[i].RobotWristPos = RobotWrist.transform.position;
-                dataGR[i].RobotWristRot = RobotWrist.transform.rotation;
+                if (mirrormode)
+                {
+                    dataGR[i].RobotWristPos = new Vector3(-RobotWrist.transform.position.x, RobotWrist.transform.position.y, RobotWrist.transform.position.z);
+                    dataGR[i].RobotWristRot = RobotWrist.transform.rotation* Quaternion.Euler(0,0,180);;
+                     
+                }
+                else
+                {
+                    dataGR[i].RobotWristPos = RobotWrist.transform.position;
+                    dataGR[i].RobotWristRot = RobotWrist.transform.rotation;
+                }
+
                 dataGR[i].ObjectPos = ObjectPos;
 
                 //iniciamos las listas
                 dataGR[i].pathPos = new List<Vector3>();
-                dataGR[i].pathPos.Add(RobotWrist.transform.position);
+                dataGR[i].pathPos.Add(dataGR[i].RobotWristPos);
 
                 dataGR[i].pathRot = new List<Quaternion>();
-                dataGR[i].pathRot.Add(RobotWrist.transform.rotation);
+                dataGR[i].pathRot.Add(dataGR[i].RobotWristRot);
+                if (!patientmode)
+                {
+                     defineTarget(dataGR[i].RobotWristPos, dataGR[i].RobotWristRot);
+                }
+                 GraspStay = true;
+
             }
+
         }
 
-        if (!patientmode)
-        {
-            defineTarget(dataGR[i].RobotWristPos, dataGR[i].RobotWristRot);
-        }
-        GraspStay = true;
+
+
     }
 
     public void Rellena_path(int i, GameObject RobotWrist, ObjGR[] dataGR)
@@ -87,17 +131,10 @@ public void Rellena_struct(string Name, GameObject RobotWrist, Vector3 ObjectPos
 
     public void defineTarget(Vector3 RobotWristPos, Quaternion RobotWristRot)
     {
-        Quaternion RobotWristRotMirror = GameObject.Find("TargetHandWristMirror").transform.rotation;
-        if (mirrormode)
-        {
-            Target.transform.localPosition = new Vector3(RobotWristPos.x, RobotWristPos.y, RobotWristPos.z);
-            Target.transform.localRotation = RobotWristRotMirror;
-        }
-        else
-        {
-            Target.transform.localPosition = new Vector3(RobotWristPos.x, RobotWristPos.y, RobotWristPos.z);
-            Target.transform.localRotation = new Quaternion(RobotWristRot.x, RobotWristRot.y, RobotWristRot.z, RobotWristRot.w);
-        }
+                
+                Target.transform.localRotation = RobotWristRot;
+                Target.transform.localPosition = RobotWristPos;
+            
     }
 
     public int lookfor_name_Data(string name)
@@ -137,13 +174,11 @@ public void Rellena_struct(string Name, GameObject RobotWrist, Vector3 ObjectPos
         movementPos = 0;
         FK_Marker = GameObject.Find("FK Marker");
         Target = GameObject.Find("Target");
+
+
     }
     private void Update()
     {
-        if(start)
-        {
-
-        }
         if (!patientmode)
         {
             //PARA EL PRIMER AGARRE
@@ -161,11 +196,11 @@ public void Rellena_struct(string Name, GameObject RobotWrist, Vector3 ObjectPos
 
 
         }
-        else if(start && FK_Marker.transform.position == Target.transform.position)
+        else if (start && FK_Marker.transform.position == Target.transform.position)
         {
             if (movementPos == 1)
             {
-                
+
                 GameObject.Find("Cylinderobot").transform.SetParent(GameObject.Find("Agarre").transform);
                 defineTarget(dataGR[0].pathPos[movementPos], dataGR[0].pathRot[movementPos]);
                 movementPos++;
@@ -178,8 +213,5 @@ public void Rellena_struct(string Name, GameObject RobotWrist, Vector3 ObjectPos
 
         }
 
-
-
     }
-
 }

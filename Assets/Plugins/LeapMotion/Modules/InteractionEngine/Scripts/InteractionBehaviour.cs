@@ -19,7 +19,6 @@ using UnityEngine;
 
 namespace Leap.Unity.Interaction
 {
-
     public enum ContactForceMode { Object, UI };
 
     /// <summary>
@@ -42,6 +41,8 @@ namespace Leap.Unity.Interaction
         public bool recording;
         bool firstRecording;
         int recordPosition;
+        Rigidbody rb;
+        
         //----------------------------------------------------------------BASE DE DATOS-------------------------
         //public GameObject DataSt;
 
@@ -942,6 +943,7 @@ namespace Leap.Unity.Interaction
             recording = false;
             firstRecording = false;
             recordPosition = 0;
+            rb = GetComponent<Rigidbody>();
             // Check any Joint attachments to automatically be able to choose Kabsch pivot
             // setting (grasping).
             RefreshPositionLockedState();
@@ -1443,7 +1445,7 @@ namespace Leap.Unity.Interaction
                 //DataSt.GetComponent<DataStr>
                 //-------------------------------------------------------------Struct de datos--------------------------------------------------
                 //datastruct.Rellena_struct(gameObject.name, GameObject.Find("TargetHandWrist"), GetGraspPoint(controller), gameObject.transform.position, datastruct.dataGR);
-                data.Rellena_struct(gameObject.name, GameObject.Find("TargetHandWrist"), gameObject.transform.position, data.dataGR);
+                data.Rellena_struct(gameObject.name, GameObject.Find("TargetHandWrist"), gameObject.transform.position, data.dataGR, data.mirrormode);
                 recording = true;
                 // if (GameObject.Find("Target").transform.position == GameObject.Find("FK Marker").transform.position)
                 // {
@@ -1545,6 +1547,8 @@ namespace Leap.Unity.Interaction
                 data.GraspStay = false;
                 recording = false;
                 firstRecording = false;
+                
+                rb.isKinematic = false;
                 //---------------------------------------------------------------------------------------------------------
                 if (controllers.Count == 1)
                 {
@@ -1563,6 +1567,7 @@ namespace Leap.Unity.Interaction
 
             if (moveObjectWhenGrasped)
             {
+                
                 Vector3 origPosition = rigidbody.position;
                 Quaternion origRotation = rigidbody.rotation;
                 Vector3 newPosition;
@@ -1581,11 +1586,21 @@ namespace Leap.Unity.Interaction
                     if (data.dataGR[data.lookfor_name_Data(gameObject.name)].RobotWristPos == GameObject.Find("FK Marker").transform.localPosition && !data.FirstGrasp) //--------------------------------------------ESTO HAY QUE CAMBIARLO PARA MAS OBJETOS
                     {
                         data.FirstGrasp = true;
+
+                        rb.isKinematic = true;
                         GameObject.Find("Cylinderobot").transform.SetParent(GameObject.Find("Agarre").transform);
                     }
                     if (data.FirstGrasp == true)
                     {
-                        data.defineTarget(GameObject.Find("TargetHandWrist").transform.position, GameObject.Find("TargetHandWrist").transform.rotation);
+                        if(!data.mirrormode)
+                        {
+                            data.defineTarget(GameObject.Find("TargetHandWrist").transform.position, GameObject.Find("TargetHandWrist").transform.rotation);
+                        }
+                        else
+                        {
+                            data.defineTarget(new Vector3(-GameObject.Find("TargetHandWrist").transform.position.x, GameObject.Find("TargetHandWrist").transform.position.y, GameObject.Find("TargetHandWrist").transform.position.z), GameObject.Find("TargetHandWrist").transform.rotation*Quaternion.Euler(0,0,0));
+                        }
+                        
                     }
                 }
                 else if (data.patientmode && Time.time > nextActionTime) //si estamos en patient mode y ha pasado el tiempo de toma de muestra
