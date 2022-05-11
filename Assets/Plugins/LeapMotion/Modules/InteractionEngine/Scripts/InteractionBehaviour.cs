@@ -945,7 +945,11 @@ namespace Leap.Unity.Interaction
             firstRecording = false;
             recordPosition = 0;
             period = 0.5f;
+            if(GameObject.Find(gameObject.name + "Robot")!=null)
+            {
             rb =GameObject.Find(gameObject.name+"Robot").GetComponent<Rigidbody>();
+            }
+
 
             // Check any Joint attachments to automatically be able to choose Kabsch pivot
             // setting (grasping).
@@ -1550,8 +1554,11 @@ namespace Leap.Unity.Interaction
                 data.GraspStay = false;
                 recording = false;
                 firstRecording = false;
-                
-                rb.isKinematic = false;
+
+                if (GameObject.Find(gameObject.name + "Robot") != null)
+                {
+                    rb.isKinematic = false;
+                }
                 //---------------------------------------------------------------------------------------------------------
                 if (controllers.Count == 1)
                 {
@@ -1588,8 +1595,11 @@ namespace Leap.Unity.Interaction
                 {
                     if (data.dataGR[data.lookfor_name_Data(gameObject.name)].RobotWristPos == GameObject.Find("FK Marker").transform.localPosition && !data.FirstGrasp) //--------------------------------------------ESTO HAY QUE CAMBIARLO PARA MAS OBJETOS
                     {
-
-                        rb.isKinematic = true;
+                        if (GameObject.Find(gameObject.name + "Robot") != null)
+                        {
+                         rb.isKinematic = true;
+                        }
+                        
                         GameObject.Find(gameObject.name+"Robot").transform.SetParent(GameObject.Find("Agarre").transform);
                         data.FirstGrasp = true;
 

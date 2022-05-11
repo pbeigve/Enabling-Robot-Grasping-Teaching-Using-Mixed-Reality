@@ -44,6 +44,18 @@ public class DataStruct : MonoBehaviour
             mirrormode = true;
         }
     }
+
+    public void PatientTrue()
+    {
+        if (patientmode)
+        {
+            patientmode = false;
+        }
+        else
+        {
+            patientmode = true;
+        }
+    }
    
     public void Rellena_struct(string Name, GameObject RobotWrist, Vector3 ObjectPos, ObjGR[] dataGR, bool mirrormode)
     {
@@ -53,7 +65,6 @@ public class DataStruct : MonoBehaviour
         bool blank = false;
         while (!blank && !find && i<5)
         {
-            Debug.Log("Buscando");
             i++;
             if (dataGR[i].Name == Name)//--------------------------------falta una condicion-------------------------
             {
@@ -72,9 +83,11 @@ public class DataStruct : MonoBehaviour
 
                 dataGR[i].ObjectPos = ObjectPos;
                 dataGR[i].pathPos.Clear();
+                dataGR[i].pathPos.Add(Target.transform.position);
                 dataGR[i].pathPos.Add(dataGR[i].RobotWristPos);
                 dataGR[i].pathRot.Clear();
                 dataGR[i].pathRot.Add(dataGR[i].RobotWristRot);
+                dataGR[i].pathRot.Add(Target.transform.rotation);
                 movementPos = 0;
                 foreach(GameObject esfera in GameObject.FindGameObjectsWithTag("pathPoints"))
                 {
@@ -90,7 +103,7 @@ public class DataStruct : MonoBehaviour
             }
             if (string.IsNullOrEmpty(dataGR[i].Name))
             {
-                Debug.Log("encontrado");
+
                 blank = true;
                 dataGR[i].Name = Name;
                 if (mirrormode)
@@ -180,7 +193,15 @@ public class DataStruct : MonoBehaviour
         FK_Marker = GameObject.Find("FK Marker");
         Target = GameObject.Find("Target");
 
+    }
 
+    public void ButtonStart()
+    {
+        start = true;
+    }
+    public void ButtonStop()
+    {
+        start = false;
     }
     private void Update()
     {
@@ -196,23 +217,23 @@ public class DataStruct : MonoBehaviour
 
 
         }
-        else if (start && FK_Marker.transform.position == Target.transform.position)
+        else if (start && FK_Marker.transform.position == Target.transform.position && dataGR[0].pathPos.Count<movementPos)
         {
             if (movementPos == 1)
             {
 
-                GameObject.Find("Cylinderobot").transform.SetParent(GameObject.Find("Agarre").transform);
+                GameObject.Find("CylinderRobot").transform.SetParent(GameObject.Find("Agarre").transform);
                 defineTarget(dataGR[0].pathPos[movementPos], dataGR[0].pathRot[movementPos]);
                 movementPos++;
             }
-            else
+            else if(movementPos <= dataGR[0].pathPos.Count && movementPos >=0)
             {
                 defineTarget(dataGR[0].pathPos[movementPos], dataGR[0].pathRot[movementPos]); //HAY QUE SABER CON QUE OBJETO ESTAMOS
                 movementPos++;
             }
 
         }
-        else if (!start && FK_Marker.transform.position == Target.transform.position)
+        else if (!start && FK_Marker.transform.position == Target.transform.position && movementPos <= dataGR[0].pathPos.Count && movementPos >= 0)
         {
 
                 defineTarget(dataGR[0].pathPos[movementPos], dataGR[0].pathRot[movementPos]); //HAY QUE SABER CON QUE OBJETO ESTAMOS
