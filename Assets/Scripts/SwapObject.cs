@@ -11,8 +11,7 @@ public class SwapObject : MonoBehaviour
     public GameObject CubeRobot;
     public GameObject Mug;
     public GameObject MugRobot;
-    public string Object;
-
+    
     public Vector3 tempPosition;
     public Vector3 tempPositionRobot;
 
@@ -22,25 +21,29 @@ public class SwapObject : MonoBehaviour
     public Vector3 basePositionRobotWait1;
     public Vector3 basePositionWait2;
     public Vector3 basePositionRobotWait2;
-    int i = 1;
+    int i = 0;
     // Start is called before the first frame update
     void Start()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+
+    
+        // Update is called once per frame
+        void Update()
     {
         
     }
 
     public void Swap()
     {
+        
         if (i == 0) //CILINDRO
         {
+            
             //OBJETO NORMAL
-            Object = "Cylinder";
+
         tempPosition = Cylinder.transform.position;
 
         Cylinder.transform.position = Cube.transform.position;
@@ -52,7 +55,9 @@ public class SwapObject : MonoBehaviour
         CylinderRobot.transform.position = CubeRobot.transform.position;
 
         CubeRobot.transform.position = tempPositionRobot;
-            i++;
+            
+            
+            
         }
 
         if (i == 1) //CUBOS
@@ -69,7 +74,8 @@ public class SwapObject : MonoBehaviour
             CubeRobot.transform.position = MugRobot.transform.position;
 
             MugRobot.transform.position = tempPositionRobot;
-            i++;
+            
+            
         }
         if (i == 2) //TAZA
         {
@@ -85,10 +91,15 @@ public class SwapObject : MonoBehaviour
             MugRobot.transform.position = CylinderRobot.transform.position;
 
             CylinderRobot.transform.position = tempPositionRobot;
+           
+            
+        }
+        i++;
+        if (i==3)
+        {
             i = 0;
         }
-
-
+        
     }
 
     public void ResetPos()
@@ -99,6 +110,8 @@ public class SwapObject : MonoBehaviour
         CylinderRobot.transform.position = basePositionRobot;
         Cube.transform.position = basePositionWait1;
         CubeRobot.transform.position = basePositionRobotWait1;
+        Mug.transform.position = basePositionWait2;
+        MugRobot.transform.position = basePositionRobotWait2;
         }
 
         if (i == 1) //CUBOS
@@ -107,15 +120,17 @@ public class SwapObject : MonoBehaviour
             CylinderRobot.transform.position = basePositionRobotWait1;
             Cube.transform.position = basePosition;
             CubeRobot.transform.position = basePositionRobot;
+            Mug.transform.position = basePositionWait2;
+            MugRobot.transform.position = basePositionRobotWait2;
         }
         if (i == 2) //TAZA
         {
-            Cylinder.transform.position = basePositionWait1;
-            CylinderRobot.transform.position = basePositionRobotWait1;
-            Cube.transform.position = basePositionWait2;
-            CubeRobot.transform.position = basePositionRobotWait2;
-            Cylinder.transform.position = basePosition;
-            CylinderRobot.transform.position = basePositionRobot;
+            Cylinder.transform.position = basePositionWait2;
+            CylinderRobot.transform.position = basePositionRobotWait2;
+            Cube.transform.position = basePositionWait1;
+            CubeRobot.transform.position = basePositionRobotWait1;
+            Mug.transform.position = basePosition;
+            MugRobot.transform.position = basePositionRobot;
         }
 
 

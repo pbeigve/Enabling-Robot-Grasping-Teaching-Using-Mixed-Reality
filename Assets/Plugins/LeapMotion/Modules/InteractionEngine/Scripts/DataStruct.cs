@@ -217,7 +217,7 @@ public class DataStruct : MonoBehaviour
 
 
         }
-        else if (start && FK_Marker.transform.position == Target.transform.position && dataGR[0].pathPos.Count<movementPos)
+        else if (start && FK_Marker.transform.position == Target.transform.position && dataGR[0].pathPos!=null && movementPos<dataGR[0].pathPos.Count)
         {
             if (movementPos == 1)
             {
@@ -233,12 +233,12 @@ public class DataStruct : MonoBehaviour
             }
 
         }
-        else if (!start && FK_Marker.transform.position == Target.transform.position && movementPos <= dataGR[0].pathPos.Count && movementPos >= 0)
+        /*else if (!start && FK_Marker.transform.position == Target.transform.position && dataGR[0].pathPos != null)
         {
 
                 defineTarget(dataGR[0].pathPos[movementPos], dataGR[0].pathRot[movementPos]); //HAY QUE SABER CON QUE OBJETO ESTAMOS
 
         }
-
+        */
     }
 }
