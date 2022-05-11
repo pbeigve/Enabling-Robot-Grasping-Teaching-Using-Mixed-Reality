@@ -6,6 +6,8 @@ TagManager:
   tags:
   - object
   - RHand
+  - MenuScripts
+  - pathPoints
   layers:
   - Default
   - TransparentFX

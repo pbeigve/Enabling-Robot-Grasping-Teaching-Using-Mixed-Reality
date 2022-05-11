@@ -76,6 +76,11 @@ public class DataStruct : MonoBehaviour
                 dataGR[i].pathRot.Clear();
                 dataGR[i].pathRot.Add(dataGR[i].RobotWristRot);
                 movementPos = 0;
+                foreach(GameObject esfera in GameObject.FindGameObjectsWithTag("pathPoints"))
+                {
+                    Destroy(esfera);
+                }
+                
                 if (!patientmode)
                 {
                     defineTarget(dataGR[i].RobotWristPos, dataGR[i].RobotWristRot);
@@ -181,12 +186,7 @@ public class DataStruct : MonoBehaviour
     {
         if (!patientmode)
         {
-            //PARA EL PRIMER AGARRE
-            if (FirstGrasp && GraspStay && GameObject.Find("Cylinderobot").transform.parent != GameObject.Find("Agarre").transform)
-            {
-                GameObject.Find("Cylinderobot").transform.SetParent(GameObject.Find("Agarre").transform);
-            }
-            if (!GraspStay && GameObject.Find("Cylinderobot").transform.parent == GameObject.Find("Agarre").transform) //------------------------------------esto hay que cambiarlo para mas objetos Hace falta un string que sea el objeto que hay selectionado
+            if (!GraspStay && GameObject.Find("Agarre").transform.childCount!=0)
             {
                 GameObject.Find("Agarre").transform.DetachChildren();
                 FirstGrasp = false;
@@ -210,6 +210,12 @@ public class DataStruct : MonoBehaviour
                 defineTarget(dataGR[0].pathPos[movementPos], dataGR[0].pathRot[movementPos]); //HAY QUE SABER CON QUE OBJETO ESTAMOS
                 movementPos++;
             }
+
+        }
+        else if (!start && FK_Marker.transform.position == Target.transform.position)
+        {
+
+                defineTarget(dataGR[0].pathPos[movementPos], dataGR[0].pathRot[movementPos]); //HAY QUE SABER CON QUE OBJETO ESTAMOS
 
         }
 

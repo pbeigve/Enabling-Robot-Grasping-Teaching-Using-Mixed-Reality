@@ -14,6 +14,7 @@ using Leap.Unity.Space;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 
@@ -41,7 +42,7 @@ namespace Leap.Unity.Interaction
         public bool recording;
         bool firstRecording;
         int recordPosition;
-        Rigidbody rb;
+        public Rigidbody rb;
         
         //----------------------------------------------------------------BASE DE DATOS-------------------------
         //public GameObject DataSt;
@@ -50,7 +51,7 @@ namespace Leap.Unity.Interaction
         //----------------------------------------------------------------CONTADOR-------------------------------------
         private float nextActionTime = 0.0f;
         // every 1f = 1 second
-        public float period = 0.5f;
+        public float period;
         //-------------------------------------------------------------------------------------------------------------
 
 
@@ -943,7 +944,9 @@ namespace Leap.Unity.Interaction
             recording = false;
             firstRecording = false;
             recordPosition = 0;
-            rb = GetComponent<Rigidbody>();
+            period = 0.5f;
+            rb =GameObject.Find(gameObject.name+"Robot").GetComponent<Rigidbody>();
+
             // Check any Joint attachments to automatically be able to choose Kabsch pivot
             // setting (grasping).
             RefreshPositionLockedState();
@@ -1585,10 +1588,11 @@ namespace Leap.Unity.Interaction
                 {
                     if (data.dataGR[data.lookfor_name_Data(gameObject.name)].RobotWristPos == GameObject.Find("FK Marker").transform.localPosition && !data.FirstGrasp) //--------------------------------------------ESTO HAY QUE CAMBIARLO PARA MAS OBJETOS
                     {
-                        data.FirstGrasp = true;
 
                         rb.isKinematic = true;
-                        GameObject.Find("Cylinderobot").transform.SetParent(GameObject.Find("Agarre").transform);
+                        GameObject.Find(gameObject.name+"Robot").transform.SetParent(GameObject.Find("Agarre").transform);
+                        data.FirstGrasp = true;
+
                     }
                     if (data.FirstGrasp == true)
                     {
