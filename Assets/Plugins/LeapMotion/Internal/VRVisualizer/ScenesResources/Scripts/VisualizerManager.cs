@@ -73,8 +73,8 @@ namespace Leap.Unity.VRVisualizer{
 
       if (m_startInScreenTopViewMode)
       {
-        Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, false);
-        goScreenTop();
+        //Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, false);
+        //goScreenTop();
       }
       else if (XRSupportUtil.IsXRDevicePresent())
       {

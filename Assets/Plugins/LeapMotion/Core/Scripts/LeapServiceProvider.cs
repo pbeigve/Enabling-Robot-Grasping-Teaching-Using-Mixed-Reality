@@ -298,7 +298,7 @@ namespace Leap.Unity {
 #if UNITY_EDITOR
       if (UnityEditor.EditorApplication.isCompiling) {
         UnityEditor.EditorApplication.isPlaying = false;
-        Debug.LogWarning("Unity hot reloading not currently supported. Stopping Editor Playback.");
+        //Debug.LogWarning("Unity hot reloading not currently supported. Stopping Editor Playback.");
         return;
       }
 #endif

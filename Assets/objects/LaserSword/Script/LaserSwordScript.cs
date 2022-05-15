@@ -83,7 +83,7 @@ namespace DigitalRuby.LaserSword
             float percent = distance / bladeHeight;
             float jitterBladeIntensity = percent * (1.0f + UnityEngine.Random.Range(0.0f, Profile.FlickerIntensity));
 
-            BladeSwordRenderer.transform.localScale = new Vector3(1.0f, percent, 1.0f);
+            BladeSwordRenderer.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
             if (percent < 0.01f)
             {
                 BladeSwordRenderer.gameObject.SetActive(false);

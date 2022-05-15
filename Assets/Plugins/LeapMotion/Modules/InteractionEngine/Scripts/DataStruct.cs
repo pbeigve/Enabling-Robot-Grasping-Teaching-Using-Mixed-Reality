@@ -21,14 +21,22 @@ public class DataStruct : MonoBehaviour
     }
 
     public bool GraspStay;
-    public ObjGR[] dataGR;
+
     public bool mirrormode;
-    public bool patientmode;
+    public bool savedPathMode;
     public bool FirstGrasp;
     public bool start;
+
+    public ObjGR[] dataGR;
+
     public GameObject ballPrefab;
+
+    public int interactionObject;
     public int movementPos;
-    public bool resetMovementPos;
+
+    public float period;
+
+
     GameObject FK_Marker;
     GameObject Target;
 
@@ -47,23 +55,23 @@ public class DataStruct : MonoBehaviour
 
     public void PatientTrue()
     {
-        if (patientmode)
+        if (savedPathMode)
         {
-            patientmode = false;
+            savedPathMode = false;
         }
         else
         {
-            patientmode = true;
+            savedPathMode = true;
         }
     }
-   
-    public void Rellena_struct(string Name, GameObject RobotWrist, Vector3 ObjectPos, ObjGR[] dataGR, bool mirrormode)
+
+    public void Rellena_struct(string Name, GameObject RobotWrist, Vector3 ObjectPos, ObjGR[] dataGR)
     {
         int i = -1;
 
         bool find = false;
         bool blank = false;
-        while (!blank && !find && i<5)
+        while (!blank && !find && i < 10)
         {
             i++;
             if (dataGR[i].Name == Name)//--------------------------------falta una condicion-------------------------
@@ -83,18 +91,18 @@ public class DataStruct : MonoBehaviour
 
                 dataGR[i].ObjectPos = ObjectPos;
                 dataGR[i].pathPos.Clear();
-                dataGR[i].pathPos.Add(Target.transform.position);
+               
                 dataGR[i].pathPos.Add(dataGR[i].RobotWristPos);
                 dataGR[i].pathRot.Clear();
+                
                 dataGR[i].pathRot.Add(dataGR[i].RobotWristRot);
-                dataGR[i].pathRot.Add(Target.transform.rotation);
                 movementPos = 0;
-                foreach(GameObject esfera in GameObject.FindGameObjectsWithTag("pathPoints"))
+                foreach (GameObject esfera in GameObject.FindGameObjectsWithTag("pathPoints"))
                 {
                     Destroy(esfera);
                 }
-                
-                if (!patientmode)
+
+                if (!savedPathMode)
                 {
                     defineTarget(dataGR[i].RobotWristPos, dataGR[i].RobotWristRot);
                 }
@@ -109,8 +117,8 @@ public class DataStruct : MonoBehaviour
                 if (mirrormode)
                 {
                     dataGR[i].RobotWristPos = new Vector3(-RobotWrist.transform.position.x, RobotWrist.transform.position.y, RobotWrist.transform.position.z);
-                    dataGR[i].RobotWristRot = RobotWrist.transform.rotation* Quaternion.Euler(0,0,180);;
-                     
+                    dataGR[i].RobotWristRot = RobotWrist.transform.rotation * Quaternion.Euler(0, 0, 180); ;
+
                 }
                 else
                 {
@@ -126,11 +134,11 @@ public class DataStruct : MonoBehaviour
 
                 dataGR[i].pathRot = new List<Quaternion>();
                 dataGR[i].pathRot.Add(dataGR[i].RobotWristRot);
-                if (!patientmode)
+                if (!savedPathMode)
                 {
-                     defineTarget(dataGR[i].RobotWristPos, dataGR[i].RobotWristRot);
+                    defineTarget(dataGR[i].RobotWristPos, dataGR[i].RobotWristRot);
                 }
-                 GraspStay = true;
+                GraspStay = true;
 
             }
 
@@ -149,17 +157,25 @@ public class DataStruct : MonoBehaviour
 
     public void defineTarget(Vector3 RobotWristPos, Quaternion RobotWristRot)
     {
-                
+            if (!mirrormode)
+            {
                 Target.transform.localRotation = RobotWristRot;
                 Target.transform.localPosition = RobotWristPos;
-            
+            }
+            else
+            {
+                Target.transform.localPosition = new Vector3(-RobotWristRot.x, RobotWristRot.y, RobotWristRot.z);
+                Target.transform.localRotation = RobotWristRot*Quaternion.Euler(180,90,0);
+            }            
+        
+
     }
 
     public int lookfor_name_Data(string name)
     {
         int i = -1;
         bool find = false;
-        while (!find)
+        while (!find && i < 10)
         {
             i++;
             if (dataGR[i].Name == name)
@@ -170,31 +186,99 @@ public class DataStruct : MonoBehaviour
         }
         return i;
     }
+
     public void mostrar_data(ObjGR[] dataGR)
     {
         foreach (ObjGR data in dataGR)
         {
             Debug.Log(data.Name + ": ");
-            Debug.Log("Wrist position: " + data.RobotWristPos + " Wrist Rotation: " + data.RobotWristRot + " Object Position: " + data.ObjectPos );
+            Debug.Log("Wrist position: " + data.RobotWristPos + " Wrist Rotation: " + data.RobotWristRot + " Object Position: " + data.ObjectPos);
         }
 
     }
     // Start is called before the first frame update
+    
+    
+    public void slider(float newperiod)
+    {
+        period=newperiod;
+
+    }
+    
+    
+    
     void Start()
     {
-        dataGR = new ObjGR[5];
+        dataGR = new ObjGR[10];
 
         mirrormode = false;
         GraspStay = false;
         FirstGrasp = false;
-        patientmode = false;
+        savedPathMode = false;
         start = false;
         movementPos = 0;
+        period = 0.5f;
+        interactionObject = 0;
         FK_Marker = GameObject.Find("FK Marker");
         Target = GameObject.Find("Target");
 
     }
 
+
+    void savedPathPerformance()
+    {
+        //skip all the empty or not used slots
+        while(GameObject.Find(dataGR[interactionObject].Name)==null && start)
+        {
+            interactionObject++;
+            Debug.Log(interactionObject);
+            if(string.IsNullOrEmpty(dataGR[interactionObject].Name) || interactionObject==10 || dataGR[interactionObject].pathPos.Count<=1)
+            {
+                interactionObject = 0;
+                start = false;
+ 
+            }
+        }
+
+        //------------------------------------------------------movement----------------------------------------------
+        if (movementPos == 1 && start && GameObject.Find(dataGR[interactionObject].Name) != null)
+        {
+            if (dataGR[interactionObject].Name != "LightSaber")
+            {
+                GameObject.Find(dataGR[interactionObject].Name + "Robot").GetComponent<Rigidbody>().isKinematic = true;
+             
+            }
+            GameObject.Find(dataGR[interactionObject].Name + "Robot").transform.SetParent(GameObject.Find("Agarre").transform);
+            defineTarget(dataGR[interactionObject].pathPos[movementPos], dataGR[interactionObject].pathRot[movementPos]);
+            movementPos++;
+        }
+        else if (movementPos < dataGR[interactionObject].pathPos.Count && movementPos >= 0 && start && GameObject.Find(dataGR[interactionObject].Name) != null)
+        {
+            defineTarget(dataGR[interactionObject].pathPos[movementPos], dataGR[interactionObject].pathRot[movementPos]); //HAY QUE SABER CON QUE OBJETO ESTAMOS
+            movementPos++;
+
+        }
+        //End of the path
+        if (movementPos == dataGR[interactionObject].pathPos.Count && start)
+        {            
+            if (dataGR[interactionObject].Name != "LightSaber")
+            {
+                GameObject.Find(dataGR[interactionObject].Name + "Robot").GetComponent<Rigidbody>().isKinematic=false;
+            }
+            movementPos = 0;
+            interactionObject++;
+
+            GameObject.Find("Agarre").transform.DetachChildren();
+
+            defineTarget(GameObject.Find("Target2").transform.localPosition, GameObject.Find("Target2").transform.localRotation);
+            if (string.IsNullOrEmpty(dataGR[interactionObject].Name) || GameObject.Find(dataGR[interactionObject].Name) == null)
+            {
+                interactionObject = 0;
+                start = false;
+            }
+        }
+
+    }
     public void ButtonStart()
     {
         start = true;
@@ -205,40 +289,20 @@ public class DataStruct : MonoBehaviour
     }
     private void Update()
     {
-        if (!patientmode)
+        if (!savedPathMode)
         {
-            if (!GraspStay && GameObject.Find("Agarre").transform.childCount!=0)
+            if (!GraspStay && GameObject.Find("Agarre").transform.childCount != 0)
             {
                 GameObject.Find("Agarre").transform.DetachChildren();
                 FirstGrasp = false;
 
             }
             //PARA COMPLETAR EL PATH
-
-
         }
-        else if (start && FK_Marker.transform.position == Target.transform.position && dataGR[0].pathPos!=null && movementPos<dataGR[0].pathPos.Count)
+        else if (FK_Marker.transform.position == Target.transform.position && start)
         {
-            if (movementPos == 1)
-            {
-
-                GameObject.Find("CylinderRobot").transform.SetParent(GameObject.Find("Agarre").transform);
-                defineTarget(dataGR[0].pathPos[movementPos], dataGR[0].pathRot[movementPos]);
-                movementPos++;
-            }
-            else if(movementPos <= dataGR[0].pathPos.Count && movementPos >=0)
-            {
-                defineTarget(dataGR[0].pathPos[movementPos], dataGR[0].pathRot[movementPos]); //HAY QUE SABER CON QUE OBJETO ESTAMOS
-                movementPos++;
-            }
-
+            savedPathPerformance();
+            Debug.Log("se ha intentao");
         }
-        /*else if (!start && FK_Marker.transform.position == Target.transform.position && dataGR[0].pathPos != null)
-        {
-
-                defineTarget(dataGR[0].pathPos[movementPos], dataGR[0].pathRot[movementPos]); //HAY QUE SABER CON QUE OBJETO ESTAMOS
-
-        }
-        */
     }
 }
