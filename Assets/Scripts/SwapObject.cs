@@ -13,16 +13,14 @@ public class SwapObject : MonoBehaviour
     public GameObject MugRobot;
     public GameObject Box;
     public GameObject BoxRobot;
+    public GameObject LightSaber;
+    public GameObject LightSaberRobot;
 
     public Vector3 tempPosition;
     public Vector3 tempPositionRobot;
 
     public Vector3 basePosition;
     public Vector3 basePositionRobot;
-    public Vector3 basePositionWait1;
-    public Vector3 basePositionRobotWait1;
-    public Vector3 basePositionWait2;
-    public Vector3 basePositionRobotWait2;
 
     public Quaternion baseOrientation;
     public Quaternion baseOrientationRobot;
@@ -64,23 +62,6 @@ public class SwapObject : MonoBehaviour
             cylinderrobot.name = "CylinderRobot";
             Instantiate(Box, basePosition, baseOrientation);
             Instantiate(BoxRobot, basePositionRobot, baseOrientationRobot);
-            /*
-            //OBJETO NORMAL
-
-        tempPosition = Cylinder.transform.position;
-
-        Cylinder.transform.position = Cube.transform.position;
-
-        Cube.transform.position = tempPosition;
-        //ROBOT OBJETO
-        tempPositionRobot = CylinderRobot.transform.position;
-
-        CylinderRobot.transform.position = CubeRobot.transform.position;
-
-        CubeRobot.transform.position = tempPositionRobot;
-            
-            */
-
         }
 
         if (i == 1) //CUBOS
@@ -100,22 +81,8 @@ public class SwapObject : MonoBehaviour
             GameObject cuberobot = Instantiate(CubeRobot, basePositionRobot, baseOrientationRobot);
             cuberobot.name = "CubeRobot";
 
-            /*
-            //OBJETO NORMAL
-            tempPosition = Cube.transform.position;
-
-            Cube.transform.position = Mug.transform.position;
-
-            Mug.transform.position = tempPosition;
-            //ROBOT OBJETO
-            tempPositionRobot = CubeRobot.transform.position;
-
-            CubeRobot.transform.position = MugRobot.transform.position;
-
-            MugRobot.transform.position = tempPositionRobot;
-            
-            */
         }
+
         if (i == 2) //TAZA
         {
             
@@ -133,24 +100,30 @@ public class SwapObject : MonoBehaviour
             GameObject mugrobot = Instantiate(MugRobot, basePositionRobot, baseOrientationRobot);
             mugrobot.name = "MugRobot";
 
-            /*
-            //OBJETO NORMAL
-            tempPosition = Mug.transform.position;
+        }
 
-            Mug.transform.position = Cylinder.transform.position;
+        if (i == 3) //LASER SWORD
+        {
 
-            Cylinder.transform.position = tempPosition;
-            //ROBOT OBJETO
-            tempPositionRobot = MugRobot.transform.position;
+            foreach (GameObject Mug in GameObject.FindGameObjectsWithTag("object"))
+            {
+                Destroy(Mug);
+            }
+            foreach (GameObject MugRobot in GameObject.FindGameObjectsWithTag("object"))
+            {
+                Destroy(MugRobot);
+            }
 
-            MugRobot.transform.position = CylinderRobot.transform.position;
-
-            CylinderRobot.transform.position = tempPositionRobot;
-           */
+            GameObject lightSaber = Instantiate(LightSaber, basePosition, baseOrientation);
+            lightSaber.name = "LightSaber";
+            GameObject lightSaberrobot = Instantiate(LightSaberRobot, basePositionRobot, baseOrientationRobot);
+            lightSaberrobot.name = "LightSaberRobot";
 
         }
+
         i++;
-        if (i==3)
+
+        if (i==4)
         {
             i = 0;
         }
@@ -174,14 +147,7 @@ public class SwapObject : MonoBehaviour
             cylinderrobot.name = "CylinderRobot";
             Instantiate(Box, basePosition, baseOrientation);
             Instantiate(BoxRobot, basePositionRobot, baseOrientationRobot);
-            /*
-        Cylinder.transform.position = basePosition;
-        CylinderRobot.transform.position = basePositionRobot;
-        Cube.transform.position = basePositionWait1;
-        CubeRobot.transform.position = basePositionRobotWait1;
-        Mug.transform.position = basePositionWait2;
-        MugRobot.transform.position = basePositionRobotWait2;
-            */
+           
         }
 
         if (i == 2) //CUBOS
@@ -198,16 +164,9 @@ public class SwapObject : MonoBehaviour
             cube.name = "Cube";
             GameObject cuberobot = Instantiate(CubeRobot, basePositionRobot, baseOrientationRobot);
             cuberobot.name = "CubeRobot";
-            /*
-            Cylinder.transform.position = basePositionWait1;
-            CylinderRobot.transform.position = basePositionRobotWait1;
-            Cube.transform.position = basePosition;
-            CubeRobot.transform.position = basePositionRobot;
-            Mug.transform.position = basePositionWait2;
-            MugRobot.transform.position = basePositionRobotWait2;
-            */
+            
         }
-        if (i == 0) //TAZA
+        if (i == 3) //TAZA
         {
             foreach (GameObject Mug in GameObject.FindGameObjectsWithTag("object"))
             {
@@ -222,16 +181,25 @@ public class SwapObject : MonoBehaviour
             mug.name = "Mug";
             GameObject mugrobot = Instantiate(MugRobot, basePositionRobot, baseOrientationRobot);
             mugrobot.name = "MugRobot";
-            /*
-            Cylinder.transform.position = basePositionWait2;
-            CylinderRobot.transform.position = basePositionRobotWait2;
-            Cube.transform.position = basePositionWait1;
-            CubeRobot.transform.position = basePositionRobotWait1;
-            Mug.transform.position = basePosition;
-            MugRobot.transform.position = basePositionRobot;
-            */
+            
         }
 
+        if (i == 0) //LASER SWORD
+        {
+            foreach (GameObject Lasersword in GameObject.FindGameObjectsWithTag("object"))
+            {
+                Destroy(Lasersword);
+            }
+            foreach (GameObject LaserswordRobot in GameObject.FindGameObjectsWithTag("object"))
+            {
+                Destroy(LaserswordRobot);
+            }
 
+            GameObject lightSaber = Instantiate(LightSaber, basePosition, baseOrientation);
+            lightSaber.name = "LightSaber";
+            GameObject lightSaberrobot = Instantiate(LightSaberRobot, basePositionRobot, baseOrientationRobot);
+            lightSaberrobot.name = "LightSaberRobot";
+
+        }
     }
 }
