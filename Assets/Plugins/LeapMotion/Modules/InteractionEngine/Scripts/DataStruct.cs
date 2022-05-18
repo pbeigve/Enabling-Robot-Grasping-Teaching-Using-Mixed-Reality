@@ -1,12 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DataStruct : MonoBehaviour
 {
-
-
-    //----------------------------------------------------------------BASE DE DATOS-------------------------
     [System.Serializable]
 
     public struct ObjGR
@@ -39,6 +37,7 @@ public class DataStruct : MonoBehaviour
 
     GameObject FK_Marker;
     GameObject Target;
+
 
 
     public void MirrorTrue()
@@ -74,27 +73,17 @@ public class DataStruct : MonoBehaviour
         while (!blank && !find && i < 10)
         {
             i++;
-            if (dataGR[i].Name == Name)//--------------------------------falta una condicion-------------------------
+            if (dataGR[i].Name == Name)//--------------------------------overwritte the object-------------------------
             {
                 find = true;
-                if (mirrormode)
-                {
-                    dataGR[i].RobotWristPos = new Vector3(-RobotWrist.transform.position.x, RobotWrist.transform.position.y, RobotWrist.transform.position.z);
-                    dataGR[i].RobotWristRot = RobotWrist.transform.rotation * Quaternion.Euler(0, 90, 90); ;
-
-                }
-                else
-                {
-                    dataGR[i].RobotWristPos = RobotWrist.transform.position;
-                    dataGR[i].RobotWristRot = RobotWrist.transform.rotation;
-                }
-
+                dataGR[i].RobotWristPos = RobotWrist.transform.position;
+                dataGR[i].RobotWristRot = RobotWrist.transform.rotation;
                 dataGR[i].ObjectPos = ObjectPos;
+
                 dataGR[i].pathPos.Clear();
-               
                 dataGR[i].pathPos.Add(dataGR[i].RobotWristPos);
                 dataGR[i].pathRot.Clear();
-                
+
                 dataGR[i].pathRot.Add(dataGR[i].RobotWristRot);
                 movementPos = 0;
                 foreach (GameObject esfera in GameObject.FindGameObjectsWithTag("pathPoints"))
@@ -109,23 +98,13 @@ public class DataStruct : MonoBehaviour
                 GraspStay = true;
 
             }
-            if (string.IsNullOrEmpty(dataGR[i].Name))
+            if (string.IsNullOrEmpty(dataGR[i].Name)) //--------------create the new object-----------------------------
             {
 
                 blank = true;
                 dataGR[i].Name = Name;
-                if (mirrormode)
-                {
-                    dataGR[i].RobotWristPos = new Vector3(-RobotWrist.transform.position.x, RobotWrist.transform.position.y, RobotWrist.transform.position.z);
-                    dataGR[i].RobotWristRot = RobotWrist.transform.rotation * Quaternion.Euler(0, 0, 180); ;
-
-                }
-                else
-                {
-                    dataGR[i].RobotWristPos = RobotWrist.transform.position;
-                    dataGR[i].RobotWristRot = RobotWrist.transform.rotation;
-                }
-
+                dataGR[i].RobotWristPos = RobotWrist.transform.position;
+                dataGR[i].RobotWristRot = RobotWrist.transform.rotation;
                 dataGR[i].ObjectPos = ObjectPos;
 
                 //iniciamos las listas
@@ -148,30 +127,33 @@ public class DataStruct : MonoBehaviour
 
     }
 
-    public void Rellena_path(int i, GameObject RobotWrist, ObjGR[] dataGR)
+    public void Rellena_path(int i, GameObject RobotWrist, ObjGR[] dataGR) //fills new data in data list path
     {
         dataGR[i].pathPos.Add(RobotWrist.transform.position);
         dataGR[i].pathRot.Add(RobotWrist.transform.rotation);
         Instantiate(ballPrefab, RobotWrist.transform.position, Quaternion.identity);
     }
 
-    public void defineTarget(Vector3 RobotWristPos, Quaternion RobotWristRot)
+    public void defineTarget(Vector3 RobotWristPos, Quaternion RobotWristRot) //modify the Target position
     {
-            if (!mirrormode)
-            {
-                Target.transform.localRotation = RobotWristRot;
-                Target.transform.localPosition = RobotWristPos;
-            }
-            else
-            {
-                Target.transform.localPosition = new Vector3(-RobotWristRot.x, RobotWristRot.y, RobotWristRot.z);
-                Target.transform.localRotation = RobotWristRot*Quaternion.Euler(180,90,0);
-            }            
-        
+        if (!mirrormode)
+        {
+            Target.transform.localRotation = RobotWristRot;
+            Target.transform.localPosition = RobotWristPos;
+        }
+        else
+        {
+
+
+            Target.transform.localRotation = new Quaternion(RobotWristRot.x, -RobotWristRot.y, -RobotWristRot.z, RobotWristRot.w) * Quaternion.Euler(0, 0, -40);
+            Target.transform.localPosition = new Vector3(-RobotWristPos.x, RobotWristPos.y, RobotWristPos.z);
+
+        }
+
 
     }
 
-    public int lookfor_name_Data(string name)
+    public int lookfor_name_Data(string name) //Finds the position of an object in DataGR
     {
         int i = -1;
         bool find = false;
@@ -186,27 +168,67 @@ public class DataStruct : MonoBehaviour
         }
         return i;
     }
-
-    public void mostrar_data(ObjGR[] dataGR)
-    {
-        foreach (ObjGR data in dataGR)
-        {
-            Debug.Log(data.Name + ": ");
-            Debug.Log("Wrist position: " + data.RobotWristPos + " Wrist Rotation: " + data.RobotWristRot + " Object Position: " + data.ObjectPos);
-        }
-
-    }
-    // Start is called before the first frame update
-    
-    
     public void slider(float newperiod)
     {
-        period=newperiod;
+        period = newperiod;
 
     }
-    
-    
-    
+
+    void savedPathPerformance() //Makes the movement of the robot in savedpath mode
+    {
+        //skip all the empty or not used slots
+        while (GameObject.Find(dataGR[interactionObject].Name) == null && start)
+        {
+            interactionObject++;
+
+            if (string.IsNullOrEmpty(dataGR[interactionObject].Name) || interactionObject == 10)
+            {
+                interactionObject = 0;
+                start = false;
+            }
+        }
+        //------------------------------------------------------movement----------------------------------------------
+        if (movementPos == 1 && start) //the robot reach the first position and grasp
+        {
+            if (dataGR[interactionObject].Name != "LightSaber")
+            {
+                GameObject.Find(dataGR[interactionObject].Name + "Robot").GetComponent<Rigidbody>().isKinematic = true;
+
+            }
+            GameObject.Find(dataGR[interactionObject].Name + "Robot").transform.SetParent(GameObject.Find("Agarre").transform);
+            defineTarget(dataGR[interactionObject].pathPos[movementPos], dataGR[interactionObject].pathRot[movementPos]);
+            movementPos++;
+        }
+        else if (movementPos < dataGR[interactionObject].pathPos.Count && start) //the robot reach a position and gets the new one
+        {
+            defineTarget(dataGR[interactionObject].pathPos[movementPos], dataGR[interactionObject].pathRot[movementPos]);
+            movementPos++;
+
+        }
+        //End of the path reset the parameters and goes to the next object
+        if (movementPos >= dataGR[interactionObject].pathPos.Count && start)
+        {
+            GameObject.Find("Agarre").transform.DetachChildren();
+            if (dataGR[interactionObject].Name != "LightSaber")
+            {
+                GameObject.Find(dataGR[interactionObject].Name + "Robot").GetComponent<Rigidbody>().isKinematic = false;
+            }
+            movementPos = 0;
+            interactionObject++;
+            defineTarget(GameObject.Find("Target2").transform.localPosition, GameObject.Find("Target2").transform.localRotation);
+        }
+        //----------------------------------------------------------------------------------------------------
+    }
+    public void ButtonStart()
+    {
+        start = true;
+    }
+    public void ButtonStop()
+    {
+        start = false;
+    }
+
+
     void Start()
     {
         dataGR = new ObjGR[10];
@@ -221,75 +243,10 @@ public class DataStruct : MonoBehaviour
         interactionObject = 0;
         FK_Marker = GameObject.Find("FK Marker");
         Target = GameObject.Find("Target");
-
-    }
-
-
-    void savedPathPerformance()
-    {
-        //skip all the empty or not used slots
-        while(GameObject.Find(dataGR[interactionObject].Name)==null && start)
-        {
-            interactionObject++;
-            Debug.Log(interactionObject);
-            if(string.IsNullOrEmpty(dataGR[interactionObject].Name) || interactionObject==10 || dataGR[interactionObject].pathPos.Count<=1)
-            {
-                interactionObject = 0;
-                start = false;
- 
-            }
-        }
-
-        //------------------------------------------------------movement----------------------------------------------
-        if (movementPos == 1 && start && GameObject.Find(dataGR[interactionObject].Name) != null)
-        {
-            if (dataGR[interactionObject].Name != "LightSaber")
-            {
-                GameObject.Find(dataGR[interactionObject].Name + "Robot").GetComponent<Rigidbody>().isKinematic = true;
-             
-            }
-            GameObject.Find(dataGR[interactionObject].Name + "Robot").transform.SetParent(GameObject.Find("Agarre").transform);
-            defineTarget(dataGR[interactionObject].pathPos[movementPos], dataGR[interactionObject].pathRot[movementPos]);
-            movementPos++;
-        }
-        else if (movementPos < dataGR[interactionObject].pathPos.Count && movementPos >= 0 && start && GameObject.Find(dataGR[interactionObject].Name) != null)
-        {
-            defineTarget(dataGR[interactionObject].pathPos[movementPos], dataGR[interactionObject].pathRot[movementPos]); //HAY QUE SABER CON QUE OBJETO ESTAMOS
-            movementPos++;
-
-        }
-        //End of the path
-        if (movementPos == dataGR[interactionObject].pathPos.Count && start)
-        {            
-            if (dataGR[interactionObject].Name != "LightSaber")
-            {
-                GameObject.Find(dataGR[interactionObject].Name + "Robot").GetComponent<Rigidbody>().isKinematic=false;
-            }
-            movementPos = 0;
-            interactionObject++;
-
-            GameObject.Find("Agarre").transform.DetachChildren();
-
-            defineTarget(GameObject.Find("Target2").transform.localPosition, GameObject.Find("Target2").transform.localRotation);
-            if (string.IsNullOrEmpty(dataGR[interactionObject].Name) || GameObject.Find(dataGR[interactionObject].Name) == null)
-            {
-                interactionObject = 0;
-                start = false;
-            }
-        }
-
-    }
-    public void ButtonStart()
-    {
-        start = true;
-    }
-    public void ButtonStop()
-    {
-        start = false;
     }
     private void Update()
     {
-        if (!savedPathMode)
+        if (!savedPathMode) //standard mode
         {
             if (!GraspStay && GameObject.Find("Agarre").transform.childCount != 0)
             {
@@ -297,12 +254,10 @@ public class DataStruct : MonoBehaviour
                 FirstGrasp = false;
 
             }
-            //PARA COMPLETAR EL PATH
         }
-        else if (FK_Marker.transform.position == Target.transform.position && start)
+        else if (FK_Marker.transform.position == Target.transform.position || Mathf.Approximately(1.0f / FK_Marker.transform.position.y, Target.transform.position.y) && start) //saved path mode
         {
             savedPathPerformance();
-            Debug.Log("se ha intentao");
         }
     }
 }

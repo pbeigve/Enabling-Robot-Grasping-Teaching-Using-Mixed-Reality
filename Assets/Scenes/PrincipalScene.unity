@@ -992,7 +992,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce6f8855d2b9df243a0325d7900b7330, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recording: 0
   rb: {fileID: 0}
   _manager: {fileID: 1577249539}
   _ignoreHoverMode: 0
@@ -1837,8 +1836,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 665392836}
-  m_RootOrder: 2
+  m_Father: {fileID: 496624060}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &474845566
 PrefabInstance:
@@ -1850,6 +1849,10 @@ PrefabInstance:
     - target: {fileID: 2035305139444489874, guid: f851fe489178fca43bcad96649d390f0, type: 3}
       propertyPath: m_Name
       value: CylinderRobot
+      objectReference: {fileID: 0}
+    - target: {fileID: 2280405750953560043, guid: f851fe489178fca43bcad96649d390f0, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3571237884006755365, guid: f851fe489178fca43bcad96649d390f0, type: 3}
       propertyPath: m_RootOrder
@@ -1941,13 +1944,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 567887299}
-  m_LocalRotation: {x: 0.45451945, y: -0.45451945, z: 0.54167527, w: 0.54167527}
-  m_LocalPosition: {x: 0.004, y: 1.737, z: -0.089}
+  m_LocalRotation: {x: 0.5710779, y: -0.2950355, z: 0.3516097, w: 0.6805842}
+  m_LocalPosition: {x: -0.044, y: 1.618, z: -0.269}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2124501401}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 80, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: 80, y: 0, z: 54.644}
 --- !u!1 &607540787
 GameObject:
   m_ObjectHideFlags: 0
@@ -2265,7 +2268,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4430945870454064, guid: b70830052572a094291638585e997551, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4430945870454064, guid: b70830052572a094291638585e997551, type: 3}
       propertyPath: m_LocalScale.x
@@ -2485,11 +2488,6 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 9dd3f5b3049028f4e948921f3bf87f79, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b70830052572a094291638585e997551, type: 3}
---- !u!4 &665392836 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4430945870454064, guid: b70830052572a094291638585e997551, type: 3}
-  m_PrefabInstance: {fileID: 665392835}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &702636475
 GameObject:
   m_ObjectHideFlags: 0
@@ -3293,7 +3291,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce6f8855d2b9df243a0325d7900b7330, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recording: 0
   rb: {fileID: 0}
   _manager: {fileID: 1577249539}
   _ignoreHoverMode: 0
@@ -3717,7 +3714,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce6f8855d2b9df243a0325d7900b7330, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recording: 0
   rb: {fileID: 0}
   _manager: {fileID: 1577249539}
   _ignoreHoverMode: 0
@@ -4096,7 +4092,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce6f8855d2b9df243a0325d7900b7330, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recording: 0
   rb: {fileID: 0}
   _manager: {fileID: 1577249539}
   _ignoreHoverMode: 0
@@ -4760,7 +4755,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce6f8855d2b9df243a0325d7900b7330, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recording: 0
   rb: {fileID: 0}
   _manager: {fileID: 1577249539}
   _ignoreHoverMode: 0
@@ -5371,7 +5365,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ebbb41b110e5794ab82d986ca172460, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recording: 0
   rb: {fileID: 0}
   _manager: {fileID: 1577249539}
   _ignoreHoverMode: 0
@@ -5591,7 +5584,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce6f8855d2b9df243a0325d7900b7330, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recording: 0
   rb: {fileID: 0}
   _manager: {fileID: 1577249539}
   _ignoreHoverMode: 0
@@ -5870,7 +5862,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f10fa40360571247a7ca806d6859557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recording: 0
   rb: {fileID: 0}
   _manager: {fileID: 1577249539}
   _ignoreHoverMode: 0
@@ -5938,7 +5929,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce6f8855d2b9df243a0325d7900b7330, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recording: 0
   rb: {fileID: 0}
   _manager: {fileID: 1577249539}
   _ignoreHoverMode: 0
@@ -6247,7 +6237,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f10fa40360571247a7ca806d6859557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recording: 0
   rb: {fileID: 0}
   _manager: {fileID: 1577249539}
   _ignoreHoverMode: 0
@@ -7552,7 +7541,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f10fa40360571247a7ca806d6859557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recording: 0
   rb: {fileID: 0}
   _manager: {fileID: 1577249539}
   _ignoreHoverMode: 0
@@ -8592,7 +8580,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce6f8855d2b9df243a0325d7900b7330, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recording: 0
   rb: {fileID: 0}
   _manager: {fileID: 1577249539}
   _ignoreHoverMode: 0
@@ -9313,7 +9300,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2007482659}
   m_LocalRotation: {x: 0.45451945, y: -0.45451945, z: 0.54167527, w: 0.54167527}
-  m_LocalPosition: {x: -0.044, y: 2.032, z: -0.342}
+  m_LocalPosition: {x: -0.044, y: 1.783, z: -0.298}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2124501401}
@@ -9616,7 +9603,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce6f8855d2b9df243a0325d7900b7330, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recording: 0
   rb: {fileID: 0}
   _manager: {fileID: 1577249539}
   _ignoreHoverMode: 0
@@ -10182,7 +10168,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce6f8855d2b9df243a0325d7900b7330, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recording: 0
   rb: {fileID: 0}
   _manager: {fileID: 1577249539}
   _ignoreHoverMode: 0

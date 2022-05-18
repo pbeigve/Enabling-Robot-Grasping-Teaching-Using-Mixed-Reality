@@ -29,10 +29,13 @@ public class SwapObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
+    public void rotate_object()
+    {
 
+    }
     
         // Update is called once per frame
         void Update()
@@ -201,5 +204,6 @@ public class SwapObject : MonoBehaviour
             lightSaberrobot.name = "LightSaberRobot";
 
         }
+        
     }
 }
