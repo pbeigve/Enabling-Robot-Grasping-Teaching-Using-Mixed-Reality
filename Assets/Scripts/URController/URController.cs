@@ -280,4 +280,9 @@ public class URController : MonoBehaviour
 
         return new DenseVector(new float[] { th1, th2, th3, th4, th5, th6 });
     }
+    public void slider(float newspeed)
+    {
+        JointVelocity = newspeed;
+
+    }
 }

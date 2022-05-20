@@ -25,11 +25,13 @@ public class SwapObject : MonoBehaviour
     public Quaternion baseOrientation;
     public Quaternion baseOrientationRobot;
 
+    DataStruct mirror;
+
     int i = 1;
     // Start is called before the first frame update
     void Start()
     {
-
+        mirror = FindObjectOfType<DataStruct>();
     }
 
     public void rotate_object()
@@ -45,10 +47,99 @@ public class SwapObject : MonoBehaviour
 
     public void Swap()
     {
+        if (mirror.mirrormode == false)
+        {
+            if (i == 0) //CILINDRO
+            {
+
+
+                foreach (GameObject Mug in GameObject.FindGameObjectsWithTag("object"))
+                {
+                    Destroy(Mug);
+                }
+                foreach (GameObject MugRobot in GameObject.FindGameObjectsWithTag("object"))
+                {
+                    Destroy(MugRobot);
+                }
+
+                GameObject cylinder = Instantiate(Cylinder, basePosition, baseOrientation);
+                cylinder.name = "Cylinder";
+                GameObject cylinderrobot = Instantiate(CylinderRobot, basePositionRobot, baseOrientationRobot);
+                cylinderrobot.name = "CylinderRobot";
+                Instantiate(Box, basePosition, baseOrientation);
+                Instantiate(BoxRobot, basePositionRobot, baseOrientationRobot);
+            }
+
+            if (i == 1) //CUBOS
+            {
+
+                foreach (GameObject Cylinder in GameObject.FindGameObjectsWithTag("object"))
+                {
+                    Destroy(Cylinder);
+                }
+                foreach (GameObject CylinderRobot in GameObject.FindGameObjectsWithTag("object"))
+                {
+                    Destroy(CylinderRobot);
+                }
+
+                GameObject cube = Instantiate(Cube, basePosition, baseOrientation);
+                cube.name = "Cube";
+                GameObject cuberobot = Instantiate(CubeRobot, basePositionRobot, baseOrientationRobot);
+                cuberobot.name = "CubeRobot";
+
+            }
+
+            if (i == 2) //TAZA
+            {
+
+                foreach (GameObject Cube in GameObject.FindGameObjectsWithTag("object"))
+                {
+                    Destroy(Cube);
+                }
+                foreach (GameObject CubeRobot in GameObject.FindGameObjectsWithTag("object"))
+                {
+                    Destroy(CubeRobot);
+                }
+
+                GameObject mug = Instantiate(Mug, basePosition, baseOrientation);
+                mug.name = "Mug";
+                GameObject mugrobot = Instantiate(MugRobot, basePositionRobot, baseOrientationRobot);
+                mugrobot.name = "MugRobot";
+
+            }
+
+            if (i == 3) //LASER SWORD
+            {
+
+                foreach (GameObject Mug in GameObject.FindGameObjectsWithTag("object"))
+                {
+                    Destroy(Mug);
+                }
+                foreach (GameObject MugRobot in GameObject.FindGameObjectsWithTag("object"))
+                {
+                    Destroy(MugRobot);
+                }
+
+                GameObject lightSaber = Instantiate(LightSaber, basePosition, baseOrientation);
+                lightSaber.name = "LightSaber";
+                GameObject lightSaberrobot = Instantiate(LightSaberRobot, basePositionRobot, baseOrientationRobot);
+                lightSaberrobot.name = "LightSaberRobot";
+
+            }
+
+            i++;
+
+            if (i == 4)
+            {
+                i = 0;
+            }
+        }
         
+        if (mirror.mirrormode == true)
+        { 
         if (i == 0) //CILINDRO
         {
-            
+
 
             foreach (GameObject Mug in GameObject.FindGameObjectsWithTag("object"))
             {
@@ -61,15 +152,15 @@ public class SwapObject : MonoBehaviour
 
             GameObject cylinder = Instantiate(Cylinder, basePosition, baseOrientation);
             cylinder.name = "Cylinder";
-            GameObject cylinderrobot = Instantiate(CylinderRobot, basePositionRobot, baseOrientationRobot);
+            GameObject cylinderrobot = Instantiate(CylinderRobot, basePositionRobot, baseOrientation);
             cylinderrobot.name = "CylinderRobot";
             Instantiate(Box, basePosition, baseOrientation);
-            Instantiate(BoxRobot, basePositionRobot, baseOrientationRobot);
+            Instantiate(BoxRobot, basePositionRobot, baseOrientation);
         }
 
         if (i == 1) //CUBOS
         {
-            
+
             foreach (GameObject Cylinder in GameObject.FindGameObjectsWithTag("object"))
             {
                 Destroy(Cylinder);
@@ -81,14 +172,14 @@ public class SwapObject : MonoBehaviour
 
             GameObject cube = Instantiate(Cube, basePosition, baseOrientation);
             cube.name = "Cube";
-            GameObject cuberobot = Instantiate(CubeRobot, basePositionRobot, baseOrientationRobot);
+            GameObject cuberobot = Instantiate(CubeRobot, basePositionRobot, baseOrientation);
             cuberobot.name = "CubeRobot";
 
         }
 
         if (i == 2) //TAZA
         {
-            
+
             foreach (GameObject Cube in GameObject.FindGameObjectsWithTag("object"))
             {
                 Destroy(Cube);
@@ -100,7 +191,7 @@ public class SwapObject : MonoBehaviour
 
             GameObject mug = Instantiate(Mug, basePosition, baseOrientation);
             mug.name = "Mug";
-            GameObject mugrobot = Instantiate(MugRobot, basePositionRobot, baseOrientationRobot);
+            GameObject mugrobot = Instantiate(MugRobot, basePositionRobot, baseOrientation);
             mugrobot.name = "MugRobot";
 
         }
@@ -119,22 +210,25 @@ public class SwapObject : MonoBehaviour
 
             GameObject lightSaber = Instantiate(LightSaber, basePosition, baseOrientation);
             lightSaber.name = "LightSaber";
-            GameObject lightSaberrobot = Instantiate(LightSaberRobot, basePositionRobot, baseOrientationRobot);
+            GameObject lightSaberrobot = Instantiate(LightSaberRobot, basePositionRobot, baseOrientation);
             lightSaberrobot.name = "LightSaberRobot";
 
         }
 
         i++;
 
-        if (i==4)
+        if (i == 4)
         {
             i = 0;
         }
     }
+    }
 
     public void ResetPos()
     {
-        if (i==1) //CILINDRO
+        if (mirror.mirrormode == false)
+        {
+            if (i == 1) //CILINDRO
         {
             foreach (GameObject Cylinder in GameObject.FindGameObjectsWithTag("object"))
             {
@@ -150,7 +244,7 @@ public class SwapObject : MonoBehaviour
             cylinderrobot.name = "CylinderRobot";
             Instantiate(Box, basePosition, baseOrientation);
             Instantiate(BoxRobot, basePositionRobot, baseOrientationRobot);
-           
+
         }
 
         if (i == 2) //CUBOS
@@ -167,7 +261,7 @@ public class SwapObject : MonoBehaviour
             cube.name = "Cube";
             GameObject cuberobot = Instantiate(CubeRobot, basePositionRobot, baseOrientationRobot);
             cuberobot.name = "CubeRobot";
-            
+
         }
         if (i == 3) //TAZA
         {
@@ -184,7 +278,7 @@ public class SwapObject : MonoBehaviour
             mug.name = "Mug";
             GameObject mugrobot = Instantiate(MugRobot, basePositionRobot, baseOrientationRobot);
             mugrobot.name = "MugRobot";
-            
+
         }
 
         if (i == 0) //LASER SWORD
@@ -204,6 +298,79 @@ public class SwapObject : MonoBehaviour
             lightSaberrobot.name = "LightSaberRobot";
 
         }
-        
+    }
+        if (mirror.mirrormode == true)
+        {
+            if (i == 1) //CILINDRO
+            {
+                foreach (GameObject Cylinder in GameObject.FindGameObjectsWithTag("object"))
+                {
+                    Destroy(Cylinder);
+                }
+                foreach (GameObject CylinderRobot in GameObject.FindGameObjectsWithTag("object"))
+                {
+                    Destroy(CylinderRobot);
+                }
+                GameObject cylinder = Instantiate(Cylinder, basePosition, baseOrientation);
+                cylinder.name = "Cylinder";
+                GameObject cylinderrobot = Instantiate(CylinderRobot, basePositionRobot, baseOrientation);
+                cylinderrobot.name = "CylinderRobot";
+                Instantiate(Box, basePosition, baseOrientation);
+                Instantiate(BoxRobot, basePositionRobot, baseOrientation);
+
+            }
+
+            if (i == 2) //CUBOS
+            {
+                foreach (GameObject Cube in GameObject.FindGameObjectsWithTag("object"))
+                {
+                    Destroy(Cube);
+                }
+                foreach (GameObject CubeRobot in GameObject.FindGameObjectsWithTag("object"))
+                {
+                    Destroy(CubeRobot);
+                }
+                GameObject cube = Instantiate(Cube, basePosition, baseOrientation);
+                cube.name = "Cube";
+                GameObject cuberobot = Instantiate(CubeRobot, basePositionRobot, baseOrientation);
+                cuberobot.name = "CubeRobot";
+
+            }
+            if (i == 3) //TAZA
+            {
+                foreach (GameObject Mug in GameObject.FindGameObjectsWithTag("object"))
+                {
+                    Destroy(Mug);
+                }
+                foreach (GameObject MugRobot in GameObject.FindGameObjectsWithTag("object"))
+                {
+                    Destroy(MugRobot);
+                }
+
+                GameObject mug = Instantiate(Mug, basePosition, baseOrientation);
+                mug.name = "Mug";
+                GameObject mugrobot = Instantiate(MugRobot, basePositionRobot, baseOrientation);
+                mugrobot.name = "MugRobot";
+
+            }
+
+            if (i == 0) //LASER SWORD
+            {
+                foreach (GameObject Lasersword in GameObject.FindGameObjectsWithTag("object"))
+                {
+                    Destroy(Lasersword);
+                }
+                foreach (GameObject LaserswordRobot in GameObject.FindGameObjectsWithTag("object"))
+                {
+                    Destroy(LaserswordRobot);
+                }
+
+                GameObject lightSaber = Instantiate(LightSaber, basePosition, baseOrientation);
+                lightSaber.name = "LightSaber";
+                GameObject lightSaberrobot = Instantiate(LightSaberRobot, basePositionRobot, baseOrientation);
+                lightSaberrobot.name = "LightSaberRobot";
+
+            }
+        }
     }
 }
