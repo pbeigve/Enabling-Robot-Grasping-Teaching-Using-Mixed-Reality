@@ -255,7 +255,7 @@ public class DataStruct : MonoBehaviour
 
             }
         }
-        else if (FK_Marker.transform.position == Target.transform.position || Mathf.Approximately(1.0f / FK_Marker.transform.position.y, Target.transform.position.y) && start) //saved path mode
+        else if (FK_Marker.transform.position == Target.transform.position || Mathf.Approximately(1.0f, FK_Marker.transform.position.y/ Target.transform.position.y) && start) //saved path mode
         {
             savedPathPerformance();
         }
